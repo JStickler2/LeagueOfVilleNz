@@ -2571,7 +2571,7 @@ const lockedCountEl = document.getElementById('lockedCount');
 const bulbRow = document.getElementById('bulbRow');
 
 function configured(){
-  return APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('https://script.google.com/macros/s/AKfycbxYJeFYSXc8d32q7PUzgKqM9yr5u0Hl5vkLZxPe3AcqbPLF13VvUBSMvEhzUsZO8GCf/exec') === -1;
+  return !!APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('script.google.com') !== -1;
 }
 
 async function loadAllPicks(){
