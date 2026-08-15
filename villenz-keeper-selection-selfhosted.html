@@ -329,6 +329,7 @@
     border-radius:999px;
   }
   .pill.penalty .rd{color:var(--gold-bright);}
+  .pill.fa .rd{color:#6FA8DC;}
   .pill.selected{
     background:var(--gold);
     border-color:var(--gold);
@@ -455,6 +456,7 @@
   }
   table.roster tr.elig-fresh td:first-child{box-shadow:inset 3px 0 0 var(--ok);}
   table.roster tr.elig-penalty td:first-child{box-shadow:inset 3px 0 0 var(--gold);}
+  table.roster tr.elig-fa td:first-child{box-shadow:inset 3px 0 0 #6FA8DC;}
   table.roster tr.elig-maxed td:first-child{box-shadow:inset 3px 0 0 var(--danger);}
   table.roster tr.elig-none td:first-child{box-shadow:inset 3px 0 0 transparent;}
   .tag{
@@ -505,6 +507,7 @@
       <span class="rule-chip"><b>2nd year&nbsp;kept</b> &rarr; 1-round penalty</span>
       <span class="rule-chip"><b>3rd year</b> &rarr; not eligible, back to the pool</span>
       <span class="rule-chip"><b>Rounds 1&ndash;4</b> &rarr; never keeper-eligible</span>
+      <span class="rule-chip"><b>Waiver/FA add</b> &rarr; kept as an 18th-round pick</span>
     </div>
     <div class="scoreboard-row">
       <div class="tally">
@@ -546,18 +549,18 @@ const TEAMS = {
 "nflTeam": "NO",
 "pos": "TE",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Chad Ryland",
 "nflTeam": "Ari",
 "pos": "K",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Bijan Robinson",
@@ -713,45 +716,45 @@ const TEAMS = {
 "nflTeam": "LAC",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Dontayvion Wicks",
 "nflTeam": "Phi",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Darius Slayton",
 "nflTeam": "NYG",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Isaac TeSlaa",
 "nflTeam": "Det",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Andy Borregales",
 "nflTeam": "NE",
 "pos": "K",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Amon-Ra St. Brown",
@@ -880,45 +883,45 @@ const TEAMS = {
 "nflTeam": "Car",
 "pos": "TE",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Tre Tucker",
 "nflTeam": "LV",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "C.J. Stroud",
 "nflTeam": "Hou",
 "pos": "QB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Ka'imi Fairbairn",
 "nflTeam": "Hou",
 "pos": "K",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Seahawks",
 "nflTeam": "Sea",
 "pos": "DEF",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Jahmyr Gibbs",
@@ -1047,27 +1050,27 @@ const TEAMS = {
 "nflTeam": "Pit",
 "pos": "QB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Samaje Perine",
 "nflTeam": "Cin",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Brandon McManus",
 "nflTeam": "GB",
 "pos": "K",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Christian McCaffrey",
@@ -1214,63 +1217,63 @@ const TEAMS = {
 "nflTeam": "Sea",
 "pos": "QB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "AJ Barner",
 "nflTeam": "Sea",
 "pos": "TE",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Troy Franklin",
 "nflTeam": "Den",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Michael Carter",
 "nflTeam": "Ten",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Audric Estime",
 "nflTeam": "NO",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Tyler Shough",
 "nflTeam": "NO",
 "pos": "QB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Jason Myers",
 "nflTeam": "Sea",
 "pos": "K",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Drake London",
@@ -1381,45 +1384,45 @@ const TEAMS = {
 "nflTeam": "Cle",
 "pos": "TE",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Christian Watson",
 "nflTeam": "GB",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Bam Knight",
 "nflTeam": "Ari",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Tez Johnson",
 "nflTeam": "TB",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Jaguars",
 "nflTeam": "Jax",
 "pos": "DEF",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Saquon Barkley",
@@ -1548,45 +1551,45 @@ const TEAMS = {
 "nflTeam": "Ari",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Dalton Schultz",
 "nflTeam": "Hou",
 "pos": "TE",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Calvin Austin III",
 "nflTeam": "NYG",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Kayshon Boutte",
 "nflTeam": "NE",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Browns",
 "nflTeam": "Cle",
 "pos": "DEF",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "CeeDee Lamb",
@@ -1715,36 +1718,36 @@ const TEAMS = {
 "nflTeam": "GB",
 "pos": "TE",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Alec Pierce",
 "nflTeam": "Ind",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Chris Rodriguez Jr.",
 "nflTeam": "Jax",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Bears",
 "nflTeam": "Chi",
 "pos": "DEF",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Derrick Henry",
@@ -1882,54 +1885,54 @@ const TEAMS = {
 "nflTeam": "Ari",
 "pos": "QB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Brenton Strange",
 "nflTeam": "Jax",
 "pos": "TE",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Devin Neal",
 "nflTeam": "NO",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Emanuel Wilson",
 "nflTeam": "Sea",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Colby Parkinson",
 "nflTeam": "LAR",
 "pos": "TE",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Jawhar Jordan",
 "nflTeam": "Hou",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Justin Jefferson",
@@ -2049,45 +2052,45 @@ const TEAMS = {
 "nflTeam": "TB",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Theo Johnson",
 "nflTeam": "NYG",
 "pos": "TE",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Parker Washington",
 "nflTeam": "Jax",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Tory Horton",
 "nflTeam": "Sea",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Buccaneers",
 "nflTeam": "TB",
 "pos": "DEF",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Ashton Jeanty",
@@ -2216,36 +2219,36 @@ const TEAMS = {
 "nflTeam": "NYG",
 "pos": "QB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Juwan Johnson",
 "nflTeam": "NO",
 "pos": "TE",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Malik Washington",
 "nflTeam": "Mia",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Blake Corum",
 "nflTeam": "LAR",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Kyren Williams",
@@ -2383,45 +2386,45 @@ const TEAMS = {
 "nflTeam": "LAC",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Oronde Gadsden",
 "nflTeam": "LAC",
 "pos": "TE",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "John Metchie III",
 "nflTeam": "Car",
 "pos": "WR",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Devin Singletary",
 "nflTeam": "NYG",
 "pos": "RB",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Rams",
 "nflTeam": "LAR",
 "pos": "DEF",
 "round2025": null,
-"eligible": false,
-"round2026": null,
-"reason": "Undrafted (waiver/FA add) - no draft round to base keeper cost on"
+"eligible": true,
+"round2026": 18,
+"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
 },
 {
 "name": "Ja'Marr Chase",
@@ -2550,7 +2553,7 @@ const TEAMS = {
 // It will look like: https://script.google.com/macros/s/AKfycb.../exec
 // See the setup instructions doc for how to get this URL.
 // ============================================================
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwP6LzXzRvilZAZ767yqUTptT81LQy-ztIVEj6C85IlcWQ1iKvfYukdpN6g89OisiY/exec";
+const APPS_SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
 
 let currentTeam = null;
 let draft = { keeper1:null, keeper2:null }; // working selection in the open panel
@@ -2691,10 +2694,13 @@ function pillHtml(p, slot){
   const otherSlot = slot === 1 ? draft.keeper2 : draft.keeper1;
   const isSelectedHere = (slot === 1 ? draft.keeper1 : draft.keeper2) === p.name;
   const isTakenByOtherSlot = otherSlot === p.name;
-  const penaltyClass = (p.round2026 !== null && p.round2025 !== null && p.round2026 < p.round2025) ? ' penalty' : '';
-  return `<button type="button" class="pill${isSelectedHere?' selected':''}${penaltyClass}${isTakenByOtherSlot?' disabled':''}"
+  const isPenalty = (p.round2026 !== null && p.round2025 !== null && p.round2026 < p.round2025);
+  const isFA = (p.round2025 === null);
+  const specialClass = isPenalty ? ' penalty' : (isFA ? ' fa' : '');
+  const faTag = isFA ? ' <span class="rd" style="margin-left:2px;">FA</span>' : '';
+  return `<button type="button" class="pill${isSelectedHere?' selected':''}${specialClass}${isTakenByOtherSlot?' disabled':''}"
     data-slot="${slot}" data-player="${p.name.replace(/"/g,'&quot;')}">
-    ${p.name} <span class="rd">Rd ${p.round2026}</span>
+    ${p.name} <span class="rd">Rd ${p.round2026}</span>${faTag}
   </button>`;
 }
 
@@ -2751,14 +2757,18 @@ function rosterTableHtml(teamName){
   let rows = roster.map(p => {
     let cls = 'elig-none';
     if(p.eligible){
-      cls = (p.round2026 < (p.round2025||9999)) ? 'elig-penalty' : 'elig-fresh';
+      if(p.round2025 === null){
+        cls = 'elig-fa';
+      } else {
+        cls = (p.round2026 < p.round2025) ? 'elig-penalty' : 'elig-fresh';
+      }
     } else if(p.round2025 !== null) {
       cls = 'elig-maxed';
     }
     return `<tr class="${cls}">
       <td>${p.name}</td>
       <td>${p.nflTeam} &middot; ${p.pos}</td>
-      <td>${p.round2025 !== null ? 'Rd '+p.round2025 : 'Waiver/FA'}</td>
+      <td>${p.round2025 !== null ? 'Rd '+p.round2025 : 'Waiver/FA add'}</td>
       <td><span class="tag ${p.eligible?'y':'n'}">${p.eligible?'Eligible &middot; Rd '+p.round2026:'Not eligible'}</span></td>
     </tr>`;
   }).join('');
