@@ -497,6 +497,170 @@
   @media (prefers-reduced-motion: reduce){
     *{animation:none !important; transition:none !important;}
   }
+
+  /* ============ VIZ TOKENS (validated — see palette notes) ============
+     Diverging surplus scale: blue(+) <-> gray(0) <-> red(-)
+       CVD dE 19.2 protan, normal-vision dE 29.0, contrast >=3:1 on #152418  [PASS]
+     Sequential scarcity ramp: 4-step blue, monotone L, all gaps >=0.06     [PASS]
+     Brand gold is UI chrome ONLY - it never encodes data.
+     Green/red was rejected: CVD dE 4.1 (deuteranopia) = indistinguishable. */
+  :root{
+    --pos:#3987e5;          /* positive surplus */
+    --neg:#e66767;          /* negative surplus */
+    --mid:#383835;          /* neutral midpoint */
+    --seq-1:#cde2fb; --seq-2:#9ec5f4; --seq-3:#5598e7; --seq-4:#2a78d6;
+    --ink-muted:#898781;
+  }
+
+  /* ---------- TABS ---------- */
+  nav.tabs{
+    display:flex; gap:4px; margin:22px 0 0; flex-wrap:wrap;
+    border-bottom:1px solid var(--turf-line);
+  }
+  nav.tabs button{
+    background:transparent; border:none; border-bottom:2px solid transparent;
+    color:var(--chalk-dim); font-family:'Inter',sans-serif; font-weight:700;
+    font-size:13px; padding:12px 16px; cursor:pointer; transition:all .12s ease;
+    display:flex; align-items:center; gap:7px;
+  }
+  nav.tabs button:hover{color:var(--chalk);}
+  nav.tabs button[aria-selected="true"]{
+    color:var(--gold-bright); border-bottom-color:var(--gold-bright);
+  }
+  nav.tabs button .tnum{
+    font-family:'IBM Plex Mono',monospace; font-size:10px;
+    background:rgba(255,255,255,0.07); padding:2px 6px; border-radius:999px;
+  }
+  .tabpanel{display:none;}
+  .tabpanel.active{display:block;}
+
+  /* ---------- STAT TILES ---------- */
+  .tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:22px 0 6px;}
+  .tile{
+    background:var(--bg-panel); border:1px solid var(--turf-line);
+    border-radius:var(--radius); padding:14px 16px;
+  }
+  .tile .tl{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-muted); margin-bottom:6px;
+  }
+  .tile .tv{font-size:26px; font-weight:700; color:var(--chalk); line-height:1.1;}
+  .tile .ts{font-size:12px; color:var(--chalk-dim); margin-top:3px;}
+
+  /* ---------- FILTER ROW ---------- */
+  .vfilters{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:20px 0 14px;}
+  .vfilters label{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--ink-muted); margin-right:-4px;
+  }
+  .vfilters select, .vfilters input{
+    background:var(--bg-panel-2); border:1px solid var(--turf-line); color:var(--chalk);
+    border-radius:8px; padding:8px 10px; font-family:'Inter',sans-serif; font-size:13px;
+  }
+  .vfilters select:focus, .vfilters input:focus{outline:2px solid var(--gold); outline-offset:1px;}
+
+  /* ---------- VALUE TABLE ---------- */
+  .vtable-wrap{overflow-x:auto; border:1px solid var(--turf-line); border-radius:var(--radius); background:var(--bg-panel);}
+  table.vtable{width:100%; border-collapse:collapse; font-size:13px; min-width:860px;}
+  table.vtable th{
+    text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--ink-muted);
+    padding:11px 12px; border-bottom:1px solid var(--turf-line);
+    cursor:pointer; user-select:none; white-space:nowrap; background:var(--bg-panel-2);
+    position:sticky; top:0;
+  }
+  table.vtable th:hover{color:var(--chalk);}
+  table.vtable th .arrow{opacity:.45; margin-left:3px;}
+  table.vtable td{
+    padding:10px 12px; border-bottom:1px solid rgba(255,255,255,0.04);
+    color:var(--chalk-dim); vertical-align:middle;
+  }
+  table.vtable tr:hover td{background:rgba(255,255,255,0.025);}
+  table.vtable td.pname{color:var(--chalk); font-weight:600; white-space:nowrap;}
+  table.vtable td.num{font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums; white-space:nowrap;}
+
+  .posdot{
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10px;
+    font-weight:700; padding:2px 6px; border-radius:4px; margin-right:2px;
+    background:rgba(255,255,255,0.07); color:var(--chalk-dim);
+  }
+
+  /* diverging surplus bar: gray centerline, blue right / red left */
+  .sbar{position:relative; width:112px; height:16px;}
+  .sbar .axis{position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--mid);}
+  .sbar .fill{position:absolute; top:3px; height:10px; border-radius:2px;}
+  .sbar .fill.p{background:var(--pos); left:50%; border-top-right-radius:4px; border-bottom-right-radius:4px;}
+  .sbar .fill.n{background:var(--neg); right:50%; border-top-left-radius:4px; border-bottom-left-radius:4px;}
+  .sval{font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums; font-weight:700; font-size:12px;}
+  .sval.p{color:var(--pos);} .sval.n{color:var(--neg);} .sval.z{color:var(--ink-muted);}
+
+  /* verdict badge: ALWAYS icon + word. Color never carries meaning alone. */
+  .verdict{
+    display:inline-flex; align-items:center; gap:5px; white-space:nowrap;
+    font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700;
+    letter-spacing:.06em; padding:4px 8px; border-radius:999px; border:1px solid;
+  }
+  .verdict.keep {color:var(--pos); border-color:rgba(57,135,229,.45); background:rgba(57,135,229,.10);}
+  .verdict.fair {color:var(--chalk-dim); border-color:var(--turf-line); background:rgba(255,255,255,.04);}
+  .verdict.avoid{color:var(--neg); border-color:rgba(230,103,103,.45); background:rgba(230,103,103,.10);}
+  .verdict.na   {color:var(--ink-muted); border-color:var(--turf-line); background:transparent;}
+
+  /* ---------- HEATMAP ---------- */
+  .heatscroll{overflow-x:auto; padding-bottom:4px;}
+  .heatgrid{border-collapse:separate; border-spacing:2px; font-size:11px;}
+  .heatgrid th.rd{
+    font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--ink-muted);
+    font-weight:600; text-align:center; padding:0 0 4px; width:26px;
+  }
+  .heatgrid th.tm{
+    text-align:right; font-size:11px; color:var(--chalk-dim); font-weight:500;
+    padding-right:8px; white-space:nowrap; max-width:180px; overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .heatcell{
+    width:26px; height:26px; border-radius:4px; background:rgba(255,255,255,0.035);
+    border:1px solid transparent; cursor:default; position:relative;
+  }
+  .heatcell.burned{background:var(--pos); border-color:rgba(255,255,255,.18);}
+  .heatcell.proj{background:transparent; border:1.5px dashed var(--pos);}
+  .heatcell:hover{outline:2px solid var(--gold-bright); outline-offset:1px;}
+  .scarcity{height:26px; border-radius:4px; position:relative;}
+  .scarcity span{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; color:#0b0b0b;
+  }
+  .legend{
+    display:flex; gap:16px; flex-wrap:wrap; align-items:center; margin:14px 0 0;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--chalk-dim);
+  }
+  .legend .li{display:flex; align-items:center; gap:6px;}
+  .legend .sw{width:14px; height:14px; border-radius:3px; display:inline-block;}
+
+  /* ---------- SCARCITY PANEL ---------- */
+  .scarcecards{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin-top:16px;}
+  .scard{background:var(--bg-panel); border:1px solid var(--turf-line); border-radius:var(--radius); padding:14px 16px;}
+  .scard h4{margin:0 0 10px; font-family:'IBM Plex Mono',monospace; font-size:11px;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--gold); font-weight:600;}
+  .meter{height:8px; border-radius:999px; background:rgba(255,255,255,0.07); overflow:hidden; margin:7px 0 5px;}
+  .meter i{display:block; height:100%; background:var(--pos); border-radius:999px;}
+  .scard .sline{display:flex; justify-content:space-between; font-size:12px; color:var(--chalk-dim); gap:8px;}
+  .scard .sname{color:var(--chalk); font-size:12px;}
+
+  /* ---------- TOOLTIP ---------- */
+  #vtip{
+    position:fixed; z-index:200; pointer-events:none; opacity:0;
+    background:#0B1410; border:1px solid var(--turf-line); border-radius:8px;
+    padding:9px 11px; font-size:12px; color:var(--chalk); max-width:270px;
+    box-shadow:0 8px 22px rgba(0,0,0,.55); transition:opacity .1s ease; line-height:1.45;
+  }
+  #vtip .tt{font-weight:700; margin-bottom:3px;}
+  #vtip .tm{color:var(--chalk-dim); font-size:11px; font-family:'IBM Plex Mono',monospace;}
+  .datanote{
+    font-size:11px; color:var(--ink-muted); font-family:'IBM Plex Mono',monospace;
+    margin-top:14px; line-height:1.6;
+  }
+  .empty-row{padding:26px; text-align:center; color:var(--ink-muted); font-size:13px;}
+
 </style>
 </head>
 <body>
@@ -508,7 +672,7 @@
     <p class="subhead">Every manager picks 1 keeper from their final 2025 roster. Tap your team below to see who you're eligible to keep &mdash; the round they were originally drafted (or picked up as a free agent), and the round they'd cost you if kept.</p>
     <div class="rules-strip">
       <span class="rule-chip"><b>1st year&nbsp;kept</b> &rarr; same round drafted</span>
-      <span class="rule-chip"><b>2nd year&nbsp;kept</b> &rarr; 1-round penalty</span>
+      <span class="rule-chip"><b>2nd year&nbsp;kept</b> &rarr; 2-round penalty</span>
       <span class="rule-chip"><b>3rd year</b> &rarr; not eligible, back to the pool</span>
       <span class="rule-chip"><b>Rounds 1&ndash;4</b> &rarr; never keeper-eligible</span>
       <span class="rule-chip"><b>Waiver/FA add</b> &rarr; kept as an 18th-round pick</span>
@@ -522,7 +686,113 @@
     </div>
   </header>
 
-  <div class="grid" id="teamGrid"></div>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true"  data-panel="tab-select">Keeper Selection</button>
+    <button role="tab" aria-selected="false" data-panel="tab-value">Value Calculator</button>
+    <button role="tab" aria-selected="false" data-panel="tab-impact">Impact Map</button>
+  </nav>
+
+  <section id="tab-select" class="tabpanel active">
+    <div class="grid" id="teamGrid"></div>
+  </section>
+
+  <section id="tab-value" class="tabpanel">
+    <div class="tiles">
+      <div class="tile"><div class="tl">Best value in the league</div>
+        <div class="tv" id="tileBest" style="font-size:19px">&mdash;</div>
+        <div class="ts" id="tileBestS"></div></div>
+      <div class="tile"><div class="tl">Worth keeping</div>
+        <div class="tv" id="tilePos">0</div>
+        <div class="ts">players at +2 rounds of value or better</div></div>
+      <div class="tile"><div class="tl">Overpays</div>
+        <div class="tv" id="tileNeg">0</div>
+        <div class="ts">cost 2+ rounds more than market</div></div>
+      <div class="tile"><div class="tl">Shown</div>
+        <div class="tv" id="tileShown">0</div>
+        <div class="ts">players matching your filters</div></div>
+    </div>
+
+    <div class="vfilters">
+      <label for="fTeam">Team</label>
+      <select id="fTeam"><option value="ALL">All teams</option></select>
+      <label for="fPos">Pos</label>
+      <select id="fPos">
+        <option value="ALL">All</option><option>QB</option><option>RB</option>
+        <option>WR</option><option>TE</option><option>K</option><option>DEF</option>
+      </select>
+      <label for="fElig">Show</label>
+      <select id="fElig">
+        <option value="YES">Eligible only</option>
+        <option value="ALL">Everyone</option>
+      </select>
+      <input id="fSearch" type="search" placeholder="Search player…" style="min-width:180px">
+    </div>
+
+    <div class="vtable-wrap">
+      <table class="vtable">
+        <thead id="vHead"><tr>
+          <th data-k="name">Player <span class="arrow">&#8597;</span></th>
+          <th data-k="pos">Pos <span class="arrow">&#8597;</span></th>
+          <th data-k="fantasyTeam">Fantasy team <span class="arrow">&#8597;</span></th>
+          <th data-k="round2025">2025 <span class="arrow">&#8597;</span></th>
+          <th data-k="adpRound">2026 ADP <span class="arrow">&#8597;</span></th>
+          <th data-k="round2026">Keeper cost <span class="arrow">&#8597;</span></th>
+          <th data-k="surplus">Surplus <span class="arrow">&#8597;</span></th>
+          <th data-k="surplus">Verdict <span class="arrow">&#8597;</span></th>
+        </tr></thead>
+        <tbody id="vBody"></tbody>
+      </table>
+    </div>
+
+    <div class="legend">
+      <span class="li"><span class="sw" style="background:var(--pos)"></span> Surplus in your favour</span>
+      <span class="li"><span class="sw" style="background:var(--neg)"></span> Costs more than market</span>
+      <span class="li">Surplus = keeper round &minus; 2026 ADP round. <b>+4</b> means you get him four rounds later than he&rsquo;d go.</span>
+    </div>
+    <p class="datanote">
+      ADP: Fantasy Football Calculator 2026 PPR, 12-team, pulled 15 Aug 2026 &middot; 260 players deep.<br>
+      Players marked <em>undrafted</em> sit outside the top 260, i.e. outside this league&rsquo;s 216 total picks.
+    </p>
+  </section>
+
+  <section id="tab-impact" class="tabpanel">
+    <div class="tiles">
+      <div class="tile"><div class="tl">Keepers declared</div>
+        <div class="tv" id="impKept">0 / 12</div>
+        <div class="ts">teams with a keeper on the board</div></div>
+      <div class="tile"><div class="tl">Actually locked</div>
+        <div class="tv" id="impLocked">0</div>
+        <div class="ts">the rest are projections</div></div>
+      <div class="tile"><div class="tl">Thinnest round</div>
+        <div class="tv" id="impThin" style="font-size:20px">&mdash;</div>
+        <div class="ts" id="impThinS"></div></div>
+    </div>
+
+    <div class="vfilters">
+      <label for="impMode">Mode</label>
+      <select id="impMode">
+        <option value="PROJECT">Locked picks + project the rest</option>
+        <option value="ACTUAL">Locked picks only</option>
+      </select>
+    </div>
+
+    <div class="heatscroll">
+      <table class="heatgrid" id="heatTable"></table>
+    </div>
+    <div class="legend">
+      <span class="li"><span class="sw" style="background:var(--pos)"></span> Pick consumed by a keeper</span>
+      <span class="li"><span class="sw" style="border:1.5px dashed var(--pos);background:transparent"></span> Projected (best value, not locked)</span>
+      <span class="li"><span class="sw" style="background:rgba(255,255,255,0.035)"></span> Pick still available</span>
+      <span class="li">Bottom row shades darker as more of that round disappears.</span>
+    </div>
+
+    <h3 style="font-family:'Anton',sans-serif;font-weight:400;font-size:20px;margin:30px 0 2px;color:var(--chalk)">Talent removed from the pool</h3>
+    <p style="font-size:13px;color:var(--chalk-dim);margin:0 0 4px;">How much of each position&rsquo;s top tier disappears before the draft even starts.</p>
+    <div class="scarcecards" id="scarceCards"></div>
+    <p class="datanote">Position ranks are among players on 2025 final rosters, ordered by 2026 ADP &mdash; not leaguewide ranks.</p>
+  </section>
+
 
   <footer>VillenZ &middot; keeper rules v1 &middot; picks are visible to everyone once a team locks in</footer>
 </div>
@@ -544,2012 +814,3308 @@
 
 <script>
 const TEAMS = {
-"teams": [
-{
-"name": "BrockEmSockEmRobots",
-"roster": [
-{
-"name": "Noah Fant",
-"nflTeam": "NO",
-"pos": "TE",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Chad Ryland",
-"nflTeam": "Ari",
-"pos": "K",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Bijan Robinson",
-"nflTeam": "Atl",
-"pos": "RB",
-"round2025": 1,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Tee Higgins",
-"nflTeam": "Cin",
-"pos": "WR",
-"round2025": 2,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Davante Adams",
-"nflTeam": "LAR",
-"pos": "WR",
-"round2025": 3,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Aaron Jones Sr.",
-"nflTeam": "Min",
-"pos": "RB",
-"round2025": 4,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "DeVonta Smith",
-"nflTeam": "Phi",
-"pos": "WR",
-"round2025": 5,
-"eligible": true,
-"round2026": 5,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Patrick Mahomes",
-"nflTeam": "KC",
-"pos": "QB",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Courtland Sutton",
-"nflTeam": "Den",
-"pos": "WR",
-"round2025": 7,
-"eligible": true,
-"round2026": 7,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Rhamondre Stevenson",
-"nflTeam": "NE",
-"pos": "RB",
-"round2025": 8,
-"eligible": true,
-"round2026": 8,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Khalil Shakir",
-"nflTeam": "Buf",
-"pos": "WR",
-"round2025": 9,
-"eligible": true,
-"round2026": 9,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Tyjae Spears",
-"nflTeam": "Ten",
-"pos": "RB",
-"round2025": 10,
-"eligible": true,
-"round2026": 10,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Dallas Goedert",
-"nflTeam": "Phi",
-"pos": "TE",
-"round2025": 11,
-"eligible": true,
-"round2026": 11,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Vikings",
-"nflTeam": "Min",
-"pos": "DEF",
-"round2025": 12,
-"eligible": true,
-"round2026": 12,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Justice Hill",
-"nflTeam": "Bal",
-"pos": "RB",
-"round2025": 13,
-"eligible": true,
-"round2026": 13,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Chase McLaughlin",
-"nflTeam": "TB",
-"pos": "K",
-"round2025": 14,
-"eligible": true,
-"round2026": 14,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Rashod Bateman",
-"nflTeam": "Bal",
-"pos": "WR",
-"round2025": 15,
-"eligible": true,
-"round2026": 15,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Matthew Stafford",
-"nflTeam": "LAR",
-"pos": "QB",
-"round2025": 17,
-"eligible": true,
-"round2026": 17,
-"reason": "No prior keeper history - eligible at original draft round"
-}
-]
-},
-{
-"name": "CZA",
-"roster": [
-{
-"name": "Kimani Vidal",
-"nflTeam": "LAC",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Dontayvion Wicks",
-"nflTeam": "Phi",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Darius Slayton",
-"nflTeam": "NYG",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Isaac TeSlaa",
-"nflTeam": "Det",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Andy Borregales",
-"nflTeam": "NE",
-"pos": "K",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Amon-Ra St. Brown",
-"nflTeam": "Det",
-"pos": "WR",
-"round2025": 1,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Terry McLaurin",
-"nflTeam": "Was",
-"pos": "WR",
-"round2025": 3,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Chris Godwin Jr.",
-"nflTeam": "TB",
-"pos": "WR",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Stefon Diggs",
-"nflTeam": "Was",
-"pos": "WR",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Dak Prescott",
-"nflTeam": "Dal",
-"pos": "QB",
-"round2025": 7,
-"eligible": true,
-"round2026": 7,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Brock Bowers",
-"nflTeam": "LV",
-"pos": "TE",
-"round2025": 8,
-"eligible": true,
-"round2026": 8,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Brian Robinson",
-"nflTeam": "Atl",
-"pos": "RB",
-"round2025": 10,
-"eligible": true,
-"round2026": 10,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Tyler Allgeier",
-"nflTeam": "Ari",
-"pos": "RB",
-"round2025": 11,
-"eligible": true,
-"round2026": 11,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Broncos",
-"nflTeam": "Den",
-"pos": "DEF",
-"round2025": 12,
-"eligible": true,
-"round2026": 12,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Geno Smith",
-"nflTeam": "NYJ",
-"pos": "QB",
-"round2025": 13,
-"eligible": true,
-"round2026": 13,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jonnu Smith",
-"nflTeam": "Pit",
-"pos": "TE",
-"round2025": 16,
-"eligible": true,
-"round2026": 16,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Woody Marks",
-"nflTeam": "Hou",
-"pos": "RB",
-"round2025": 17,
-"eligible": true,
-"round2026": 17,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Wil Lutz",
-"nflTeam": "Den",
-"pos": "K",
-"round2025": 17,
-"eligible": true,
-"round2026": 17,
-"reason": "No prior keeper history - eligible at original draft round"
-}
-]
-},
-{
-"name": "Combover Crackas",
-"roster": [
-{
-"name": "Darren Waller",
-"nflTeam": "Car",
-"pos": "TE",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Tre Tucker",
-"nflTeam": "LV",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "C.J. Stroud",
-"nflTeam": "Hou",
-"pos": "QB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Ka'imi Fairbairn",
-"nflTeam": "Hou",
-"pos": "K",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Seahawks",
-"nflTeam": "Sea",
-"pos": "DEF",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Jahmyr Gibbs",
-"nflTeam": "Det",
-"pos": "RB",
-"round2025": 1,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Josh Allen",
-"nflTeam": "Buf",
-"pos": "QB",
-"round2025": 2,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Mike Evans",
-"nflTeam": "SF",
-"pos": "WR",
-"round2025": 3,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "RJ Harvey",
-"nflTeam": "Den",
-"pos": "RB",
-"round2025": 4,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Jameson Williams",
-"nflTeam": "Det",
-"pos": "WR",
-"round2025": 5,
-"eligible": true,
-"round2026": 5,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jerry Jeudy",
-"nflTeam": "Cle",
-"pos": "WR",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Brian Thomas Jr.",
-"nflTeam": "Jax",
-"pos": "WR",
-"round2025": 7,
-"eligible": true,
-"round2026": 6,
-"reason": "Kept 1 year already (2025 note: \"2025 keeper\") - 2026 would be 2nd year, 1-round penalty applied"
-},
-{
-"name": "Jayden Reed",
-"nflTeam": "GB",
-"pos": "WR",
-"round2025": 8,
-"eligible": true,
-"round2026": 8,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Cam Skattebo",
-"nflTeam": "NYG",
-"pos": "RB",
-"round2025": 9,
-"eligible": true,
-"round2026": 9,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Colston Loveland",
-"nflTeam": "Chi",
-"pos": "TE",
-"round2025": 10,
-"eligible": true,
-"round2026": 10,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Nick Chubb",
-"nflTeam": "Hou",
-"pos": "RB",
-"round2025": 11,
-"eligible": true,
-"round2026": 11,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Brandon Aiyuk",
-"nflTeam": "SF",
-"pos": "WR",
-"round2025": 12,
-"eligible": true,
-"round2026": 12,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Kareem Hunt",
-"nflTeam": "KC",
-"pos": "RB",
-"round2025": 18,
-"eligible": true,
-"round2026": 18,
-"reason": "No prior keeper history - eligible at original draft round"
-}
-]
-},
-{
-"name": "DaddyPHATsacs",
-"roster": [
-{
-"name": "Aaron Rodgers",
-"nflTeam": "Pit",
-"pos": "QB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Samaje Perine",
-"nflTeam": "Cin",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Brandon McManus",
-"nflTeam": "GB",
-"pos": "K",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Christian McCaffrey",
-"nflTeam": "SF",
-"pos": "RB",
-"round2025": 1,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Ladd McConkey",
-"nflTeam": "LAC",
-"pos": "WR",
-"round2025": 2,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "DJ Moore",
-"nflTeam": "Buf",
-"pos": "WR",
-"round2025": 4,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Jakobi Meyers",
-"nflTeam": "Jax",
-"pos": "WR",
-"round2025": 5,
-"eligible": true,
-"round2026": 5,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Tyrone Tracy Jr.",
-"nflTeam": "NYG",
-"pos": "RB",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Quinshon Judkins",
-"nflTeam": "Cle",
-"pos": "RB",
-"round2025": 8,
-"eligible": true,
-"round2026": 8,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jauan Jennings",
-"nflTeam": "Min",
-"pos": "WR",
-"round2025": 9,
-"eligible": true,
-"round2026": 9,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jake Ferguson",
-"nflTeam": "Dal",
-"pos": "TE",
-"round2025": 11,
-"eligible": true,
-"round2026": 11,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Steelers",
-"nflTeam": "Pit",
-"pos": "DEF",
-"round2025": 12,
-"eligible": true,
-"round2026": 12,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Harrison Butker",
-"nflTeam": "KC",
-"pos": "K",
-"round2025": 14,
-"eligible": true,
-"round2026": 14,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Hunter Henry",
-"nflTeam": "NE",
-"pos": "TE",
-"round2025": 15,
-"eligible": true,
-"round2026": 15,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Trevor Lawrence",
-"nflTeam": "Jax",
-"pos": "QB",
-"round2025": 17,
-"eligible": true,
-"round2026": 17,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Puka Nacua",
-"nflTeam": "LAR",
-"pos": "WR",
-"round2025": 17,
-"eligible": false,
-"round2026": null,
-"reason": "Already kept 2 years (2025 note: \"2025 Keeper, 17th round, last year\") - must return to draft pool"
-},
-{
-"name": "Romeo Doubs",
-"nflTeam": "NE",
-"pos": "WR",
-"round2025": 18,
-"eligible": true,
-"round2026": 18,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Dolphins",
-"nflTeam": "Mia",
-"pos": "DEF",
-"round2025": 18,
-"eligible": true,
-"round2026": 18,
-"reason": "No prior keeper history - eligible at original draft round"
-}
-]
-},
-{
-"name": "Fantasy football team",
-"roster": [
-{
-"name": "Sam Darnold",
-"nflTeam": "Sea",
-"pos": "QB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "AJ Barner",
-"nflTeam": "Sea",
-"pos": "TE",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Troy Franklin",
-"nflTeam": "Den",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Michael Carter",
-"nflTeam": "Ten",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Audric Estime",
-"nflTeam": "NO",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Tyler Shough",
-"nflTeam": "NO",
-"pos": "QB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Jason Myers",
-"nflTeam": "Sea",
-"pos": "K",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Drake London",
-"nflTeam": "Atl",
-"pos": "WR",
-"round2025": 1,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Josh Jacobs",
-"nflTeam": "GB",
-"pos": "RB",
-"round2025": 2,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Marvin Harrison Jr.",
-"nflTeam": "Ari",
-"pos": "WR",
-"round2025": 3,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Breece Hall",
-"nflTeam": "NYJ",
-"pos": "RB",
-"round2025": 4,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "George Pickens",
-"nflTeam": "Dal",
-"pos": "WR",
-"round2025": 5,
-"eligible": true,
-"round2026": 5,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Ricky Pearsall",
-"nflTeam": "SF",
-"pos": "WR",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Matthew Golden",
-"nflTeam": "GB",
-"pos": "WR",
-"round2025": 8,
-"eligible": true,
-"round2026": 8,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Dalton Kincaid",
-"nflTeam": "Buf",
-"pos": "TE",
-"round2025": 11,
-"eligible": true,
-"round2026": 11,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Eagles",
-"nflTeam": "Phi",
-"pos": "DEF",
-"round2025": 13,
-"eligible": true,
-"round2026": 13,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Rico Dowdle",
-"nflTeam": "Pit",
-"pos": "RB",
-"round2025": 15,
-"eligible": true,
-"round2026": 15,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Bucky Irving",
-"nflTeam": "TB",
-"pos": "RB",
-"round2025": 16,
-"eligible": true,
-"round2026": 15,
-"reason": "Kept 1 year already (2025 note: \"2025 Keeper, first year\") - 2026 would be 2nd year, 1-round penalty applied"
-}
-]
-},
-{
-"name": "JAVA The Hutt",
-"roster": [
-{
-"name": "Harold Fannin Jr.",
-"nflTeam": "Cle",
-"pos": "TE",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Christian Watson",
-"nflTeam": "GB",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Bam Knight",
-"nflTeam": "Ari",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Tez Johnson",
-"nflTeam": "TB",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Jaguars",
-"nflTeam": "Jax",
-"pos": "DEF",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Saquon Barkley",
-"nflTeam": "Phi",
-"pos": "RB",
-"round2025": 1,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Omarion Hampton",
-"nflTeam": "LAC",
-"pos": "RB",
-"round2025": 2,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "James Cook III",
-"nflTeam": "Buf",
-"pos": "RB",
-"round2025": 3,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "DK Metcalf",
-"nflTeam": "Pit",
-"pos": "WR",
-"round2025": 4,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Tetairoa McMillan",
-"nflTeam": "Car",
-"pos": "WR",
-"round2025": 5,
-"eligible": true,
-"round2026": 5,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Emeka Egbuka",
-"nflTeam": "TB",
-"pos": "WR",
-"round2025": 7,
-"eligible": true,
-"round2026": 7,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Caleb Williams",
-"nflTeam": "Chi",
-"pos": "QB",
-"round2025": 8,
-"eligible": true,
-"round2026": 8,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jordan Mason",
-"nflTeam": "Min",
-"pos": "RB",
-"round2025": 9,
-"eligible": true,
-"round2026": 9,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Justin Herbert",
-"nflTeam": "LAC",
-"pos": "QB",
-"round2025": 12,
-"eligible": true,
-"round2026": 12,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Luther Burden III",
-"nflTeam": "Chi",
-"pos": "WR",
-"round2025": 12,
-"eligible": true,
-"round2026": 12,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Bhayshul Tuten",
-"nflTeam": "Jax",
-"pos": "RB",
-"round2025": 13,
-"eligible": true,
-"round2026": 13,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Cameron Dicker",
-"nflTeam": "LAC",
-"pos": "K",
-"round2025": 14,
-"eligible": true,
-"round2026": 14,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Patriots",
-"nflTeam": "NE",
-"pos": "DEF",
-"round2025": 14,
-"eligible": true,
-"round2026": 14,
-"reason": "No prior keeper history - eligible at original draft round"
-}
-]
-},
-{
-"name": "Pappy Time",
-"roster": [
-{
-"name": "Michael Wilson",
-"nflTeam": "Ari",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Dalton Schultz",
-"nflTeam": "Hou",
-"pos": "TE",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Calvin Austin III",
-"nflTeam": "NYG",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Kayshon Boutte",
-"nflTeam": "NE",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Browns",
-"nflTeam": "Cle",
-"pos": "DEF",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "CeeDee Lamb",
-"nflTeam": "Dal",
-"pos": "WR",
-"round2025": 1,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Jonathan Taylor",
-"nflTeam": "Ind",
-"pos": "RB",
-"round2025": 2,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Jalen Hurts",
-"nflTeam": "Phi",
-"pos": "QB",
-"round2025": 3,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "TreVeyon Henderson",
-"nflTeam": "NE",
-"pos": "RB",
-"round2025": 4,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Deebo Samuel Sr.",
-"nflTeam": "SF",
-"pos": "WR",
-"round2025": 5,
-"eligible": true,
-"round2026": 5,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jaylen Warren",
-"nflTeam": "Pit",
-"pos": "RB",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Keon Coleman",
-"nflTeam": "Buf",
-"pos": "WR",
-"round2025": 7,
-"eligible": true,
-"round2026": 7,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "David Njoku",
-"nflTeam": "LAC",
-"pos": "TE",
-"round2025": 9,
-"eligible": true,
-"round2026": 9,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Tucker Kraft",
-"nflTeam": "GB",
-"pos": "TE",
-"round2025": 10,
-"eligible": true,
-"round2026": 10,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Adonai Mitchell",
-"nflTeam": "NYJ",
-"pos": "WR",
-"round2025": 10,
-"eligible": true,
-"round2026": 10,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jared Goff",
-"nflTeam": "Det",
-"pos": "QB",
-"round2025": 11,
-"eligible": true,
-"round2026": 11,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Brandon Aubrey",
-"nflTeam": "Dal",
-"pos": "K",
-"round2025": 12,
-"eligible": true,
-"round2026": 12,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Lions",
-"nflTeam": "Det",
-"pos": "DEF",
-"round2025": 15,
-"eligible": true,
-"round2026": 15,
-"reason": "No prior keeper history - eligible at original draft round"
-}
-]
-},
-{
-"name": "Rushin\u2019 Roulettes",
-"roster": [
-{
-"name": "Luke Musgrave",
-"nflTeam": "GB",
-"pos": "TE",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Alec Pierce",
-"nflTeam": "Ind",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Chris Rodriguez Jr.",
-"nflTeam": "Jax",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Bears",
-"nflTeam": "Chi",
-"pos": "DEF",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Derrick Henry",
-"nflTeam": "Bal",
-"pos": "RB",
-"round2025": 1,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Lamar Jackson",
-"nflTeam": "Bal",
-"pos": "QB",
-"round2025": 2,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Alvin Kamara",
-"nflTeam": "NO",
-"pos": "RB",
-"round2025": 3,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "D'Andre Swift",
-"nflTeam": "Chi",
-"pos": "RB",
-"round2025": 4,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Chris Olave",
-"nflTeam": "NO",
-"pos": "WR",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Cooper Kupp",
-"nflTeam": "Sea",
-"pos": "WR",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jaxon Smith-Njigba",
-"nflTeam": "Sea",
-"pos": "WR",
-"round2025": 7,
-"eligible": true,
-"round2026": 7,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Travis Etienne Jr.",
-"nflTeam": "NO",
-"pos": "RB",
-"round2025": 8,
-"eligible": true,
-"round2026": 8,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Javonte Williams",
-"nflTeam": "Dal",
-"pos": "RB",
-"round2025": 9,
-"eligible": true,
-"round2026": 9,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Tyler Warren",
-"nflTeam": "Ind",
-"pos": "TE",
-"round2025": 10,
-"eligible": true,
-"round2026": 10,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Christian Kirk",
-"nflTeam": "SF",
-"pos": "WR",
-"round2025": 11,
-"eligible": true,
-"round2026": 11,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jake Elliott",
-"nflTeam": "Phi",
-"pos": "K",
-"round2025": 15,
-"eligible": true,
-"round2026": 15,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Drake Maye",
-"nflTeam": "NE",
-"pos": "QB",
-"round2025": 16,
-"eligible": true,
-"round2026": 16,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "DeAndre Hopkins",
-"nflTeam": "Bal",
-"pos": "WR",
-"round2025": 18,
-"eligible": true,
-"round2026": 18,
-"reason": "No prior keeper history - eligible at original draft round"
-}
-]
-},
-{
-"name": "SavaHorse RydaCouden",
-"roster": [
-{
-"name": "Jacoby Brissett",
-"nflTeam": "Ari",
-"pos": "QB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Brenton Strange",
-"nflTeam": "Jax",
-"pos": "TE",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Devin Neal",
-"nflTeam": "NO",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Emanuel Wilson",
-"nflTeam": "Sea",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Colby Parkinson",
-"nflTeam": "LAR",
-"pos": "TE",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Jawhar Jordan",
-"nflTeam": "Hou",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Justin Jefferson",
-"nflTeam": "Min",
-"pos": "WR",
-"round2025": 1,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Chuba Hubbard",
-"nflTeam": "Car",
-"pos": "RB",
-"round2025": 3,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Zay Flowers",
-"nflTeam": "Bal",
-"pos": "WR",
-"round2025": 4,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Isiah Pacheco",
-"nflTeam": "Det",
-"pos": "RB",
-"round2025": 5,
-"eligible": true,
-"round2026": 5,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "T.J. Hockenson",
-"nflTeam": "Min",
-"pos": "TE",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Michael Pittman Jr.",
-"nflTeam": "Pit",
-"pos": "WR",
-"round2025": 7,
-"eligible": true,
-"round2026": 7,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jacory Croskey-Merritt",
-"nflTeam": "Was",
-"pos": "RB",
-"round2025": 9,
-"eligible": true,
-"round2026": 9,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Darnell Mooney",
-"nflTeam": "NYG",
-"pos": "WR",
-"round2025": 10,
-"eligible": true,
-"round2026": 10,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Hollywood Brown",
-"nflTeam": "Phi",
-"pos": "WR",
-"round2025": 11,
-"eligible": true,
-"round2026": 11,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Kyle Pitts Sr.",
-"nflTeam": "Atl",
-"pos": "TE",
-"round2025": 13,
-"eligible": true,
-"round2026": 13,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Brock Purdy",
-"nflTeam": "SF",
-"pos": "QB",
-"round2025": 14,
-"eligible": true,
-"round2026": 14,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Texans",
-"nflTeam": "Hou",
-"pos": "DEF",
-"round2025": 17,
-"eligible": true,
-"round2026": 17,
-"reason": "No prior keeper history - eligible at original draft round"
-}
-]
-},
-{
-"name": "Seal team Nix",
-"roster": [
-{
-"name": "Kenny Gainwell",
-"nflTeam": "TB",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Theo Johnson",
-"nflTeam": "NYG",
-"pos": "TE",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Parker Washington",
-"nflTeam": "Jax",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Tory Horton",
-"nflTeam": "Sea",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Buccaneers",
-"nflTeam": "TB",
-"pos": "DEF",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Ashton Jeanty",
-"nflTeam": "LV",
-"pos": "RB",
-"round2025": 1,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "A.J. Brown",
-"nflTeam": "NE",
-"pos": "WR",
-"round2025": 2,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Kenneth Walker III",
-"nflTeam": "KC",
-"pos": "RB",
-"round2025": 3,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Xavier Worthy",
-"nflTeam": "KC",
-"pos": "WR",
-"round2025": 4,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Rome Odunze",
-"nflTeam": "Chi",
-"pos": "WR",
-"round2025": 5,
-"eligible": true,
-"round2026": 5,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Tony Pollard",
-"nflTeam": "Ten",
-"pos": "RB",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Mark Andrews",
-"nflTeam": "Bal",
-"pos": "TE",
-"round2025": 7,
-"eligible": true,
-"round2026": 7,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Bo Nix",
-"nflTeam": "Den",
-"pos": "QB",
-"round2025": 8,
-"eligible": true,
-"round2026": 8,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Keenan Allen",
-"nflTeam": "LAC",
-"pos": "WR",
-"round2025": 9,
-"eligible": true,
-"round2026": 9,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Nico Collins",
-"nflTeam": "Hou",
-"pos": "WR",
-"round2025": 10,
-"eligible": false,
-"round2026": null,
-"reason": "Already kept 2 years (2025 note: \"2025 keeper, last year, 10th round\") - must return to draft pool"
-},
-{
-"name": "Jordan Love",
-"nflTeam": "GB",
-"pos": "QB",
-"round2025": 13,
-"eligible": true,
-"round2026": 13,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Tyler Loop",
-"nflTeam": "Bal",
-"pos": "K",
-"round2025": 18,
-"eligible": true,
-"round2026": 18,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Cowboys",
-"nflTeam": "Dal",
-"pos": "DEF",
-"round2025": 18,
-"eligible": true,
-"round2026": 18,
-"reason": "No prior keeper history - eligible at original draft round"
-}
-]
-},
-{
-"name": "Str8 Outta Compton",
-"roster": [
-{
-"name": "Jaxson Dart",
-"nflTeam": "NYG",
-"pos": "QB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Juwan Johnson",
-"nflTeam": "NO",
-"pos": "TE",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Malik Washington",
-"nflTeam": "Mia",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Blake Corum",
-"nflTeam": "LAR",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Kyren Williams",
-"nflTeam": "LAR",
-"pos": "RB",
-"round2025": 2,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Garrett Wilson",
-"nflTeam": "NYJ",
-"pos": "WR",
-"round2025": 3,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "George Kittle",
-"nflTeam": "SF",
-"pos": "TE",
-"round2025": 4,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "David Montgomery",
-"nflTeam": "Hou",
-"pos": "RB",
-"round2025": 5,
-"eligible": true,
-"round2026": 5,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Baker Mayfield",
-"nflTeam": "TB",
-"pos": "QB",
-"round2025": 6,
-"eligible": true,
-"round2026": 6,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jordan Addison",
-"nflTeam": "Min",
-"pos": "WR",
-"round2025": 8,
-"eligible": true,
-"round2026": 8,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Josh Downs",
-"nflTeam": "Ind",
-"pos": "WR",
-"round2025": 9,
-"eligible": true,
-"round2026": 9,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Jayden Higgins",
-"nflTeam": "Hou",
-"pos": "WR",
-"round2025": 10,
-"eligible": true,
-"round2026": 10,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Rachaad White",
-"nflTeam": "Was",
-"pos": "RB",
-"round2025": 11,
-"eligible": true,
-"round2026": 11,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "J.K. Dobbins",
-"nflTeam": "Den",
-"pos": "RB",
-"round2025": 12,
-"eligible": true,
-"round2026": 12,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Ravens",
-"nflTeam": "Bal",
-"pos": "DEF",
-"round2025": 13,
-"eligible": true,
-"round2026": 13,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "J.J. McCarthy",
-"nflTeam": "Min",
-"pos": "QB",
-"round2025": 15,
-"eligible": true,
-"round2026": 15,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Kyle Monangai",
-"nflTeam": "Chi",
-"pos": "RB",
-"round2025": 17,
-"eligible": true,
-"round2026": 17,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Evan McPherson",
-"nflTeam": "Cin",
-"pos": "K",
-"round2025": 17,
-"eligible": true,
-"round2026": 17,
-"reason": "No prior keeper history - eligible at original draft round"
-}
-]
-},
-{
-"name": "Tua Legit Tua Quit",
-"roster": [
-{
-"name": "Quentin Johnston",
-"nflTeam": "LAC",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Oronde Gadsden",
-"nflTeam": "LAC",
-"pos": "TE",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "John Metchie III",
-"nflTeam": "Car",
-"pos": "WR",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Devin Singletary",
-"nflTeam": "NYG",
-"pos": "RB",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Rams",
-"nflTeam": "LAR",
-"pos": "DEF",
-"round2025": null,
-"eligible": true,
-"round2026": 18,
-"reason": "Waiver/free-agent add on the 2025 final roster \u2014 if kept, counts as an 18th-round (last round) pick for 2026"
-},
-{
-"name": "Ja'Marr Chase",
-"nflTeam": "Cin",
-"pos": "WR",
-"round2025": 1,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Joe Burrow",
-"nflTeam": "Cin",
-"pos": "QB",
-"round2025": 2,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Chase Brown",
-"nflTeam": "Cin",
-"pos": "RB",
-"round2025": 2,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Trey McBride",
-"nflTeam": "Ari",
-"pos": "TE",
-"round2025": 3,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Jaylen Waddle",
-"nflTeam": "Den",
-"pos": "WR",
-"round2025": 4,
-"eligible": false,
-"round2026": null,
-"reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)"
-},
-{
-"name": "Rashee Rice",
-"nflTeam": "KC",
-"pos": "WR",
-"round2025": 5,
-"eligible": true,
-"round2026": 5,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Travis Kelce",
-"nflTeam": "KC",
-"pos": "TE",
-"round2025": 7,
-"eligible": true,
-"round2026": 7,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Zach Charbonnet",
-"nflTeam": "Sea",
-"pos": "RB",
-"round2025": 8,
-"eligible": true,
-"round2026": 8,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "De'Von Achane",
-"nflTeam": "Mia",
-"pos": "RB",
-"round2025": 9,
-"eligible": false,
-"round2026": null,
-"reason": "Already kept 2 years (2025 note: \"2025 Keeper, last year, will be 9th round pick\") - must return to draft pool"
-},
-{
-"name": "Jaylen Wright",
-"nflTeam": "Mia",
-"pos": "RB",
-"round2025": 12,
-"eligible": true,
-"round2026": 12,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Wan'Dale Robinson",
-"nflTeam": "Ten",
-"pos": "WR",
-"round2025": 13,
-"eligible": true,
-"round2026": 13,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Dylan Sampson",
-"nflTeam": "Cle",
-"pos": "RB",
-"round2025": 15,
-"eligible": true,
-"round2026": 15,
-"reason": "No prior keeper history - eligible at original draft round"
-},
-{
-"name": "Cam Little",
-"nflTeam": "Jax",
-"pos": "K",
-"round2025": 15,
-"eligible": true,
-"round2026": 15,
-"reason": "No prior keeper history - eligible at original draft round"
-}
-]
-}
-]
+ "teams": [
+  {
+   "name": "BrockEmSockEmRobots",
+   "roster": [
+    {
+     "name": "Noah Fant",
+     "nflTeam": "NO",
+     "pos": "TE",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 366,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Chad Ryland",
+     "nflTeam": "Ari",
+     "pos": "K",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 372,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Bijan Robinson",
+     "nflTeam": "Atl",
+     "pos": "RB",
+     "round2025": 1,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 2,
+     "adp": 1.7,
+     "adpRound": 1,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Tee Higgins",
+     "nflTeam": "Cin",
+     "pos": "WR",
+     "round2025": 2,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 28,
+     "adp": 37.2,
+     "adpRound": 4,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Davante Adams",
+     "nflTeam": "LAR",
+     "pos": "WR",
+     "round2025": 3,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 51,
+     "adp": 41.2,
+     "adpRound": 4,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Aaron Jones Sr.",
+     "nflTeam": "Min",
+     "pos": "RB",
+     "round2025": 4,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 122,
+     "adp": 96.0,
+     "adpRound": 8,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "DeVonta Smith",
+     "nflTeam": "Phi",
+     "pos": "WR",
+     "round2025": 5,
+     "eligible": true,
+     "round2026": 5,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 24,
+     "adp": 28.8,
+     "adpRound": 3,
+     "surplus": 2,
+     "undrafted": false
+    },
+    {
+     "name": "Patrick Mahomes",
+     "nflTeam": "KC",
+     "pos": "QB",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 111,
+     "adp": 99.0,
+     "adpRound": 9,
+     "surplus": -3,
+     "undrafted": false
+    },
+    {
+     "name": "Courtland Sutton",
+     "nflTeam": "Den",
+     "pos": "WR",
+     "round2025": 7,
+     "eligible": true,
+     "round2026": 7,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 100,
+     "adp": 60.1,
+     "adpRound": 6,
+     "surplus": 1,
+     "undrafted": false
+    },
+    {
+     "name": "Rhamondre Stevenson",
+     "nflTeam": "NE",
+     "pos": "RB",
+     "round2025": 8,
+     "eligible": true,
+     "round2026": 8,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 67,
+     "adp": 70.9,
+     "adpRound": 6,
+     "surplus": 2,
+     "undrafted": false
+    },
+    {
+     "name": "Khalil Shakir",
+     "nflTeam": "Buf",
+     "pos": "WR",
+     "round2025": 9,
+     "eligible": true,
+     "round2026": 9,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 144,
+     "adp": 100.9,
+     "adpRound": 9,
+     "surplus": 0,
+     "undrafted": false
+    },
+    {
+     "name": "Tyjae Spears",
+     "nflTeam": "Ten",
+     "pos": "RB",
+     "round2025": 10,
+     "eligible": true,
+     "round2026": 10,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 146,
+     "adp": 131.5,
+     "adpRound": 11,
+     "surplus": -1,
+     "undrafted": false
+    },
+    {
+     "name": "Dallas Goedert",
+     "nflTeam": "Phi",
+     "pos": "TE",
+     "round2025": 11,
+     "eligible": true,
+     "round2026": 11,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 116,
+     "adp": 113.1,
+     "adpRound": 10,
+     "surplus": 1,
+     "undrafted": false
+    },
+    {
+     "name": "Vikings",
+     "nflTeam": "Min",
+     "pos": "DEF",
+     "round2025": 12,
+     "eligible": true,
+     "round2026": 12,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 175,
+     "adp": 117.0,
+     "adpRound": 10,
+     "surplus": 2,
+     "undrafted": false
+    },
+    {
+     "name": "Justice Hill",
+     "nflTeam": "Bal",
+     "pos": "RB",
+     "round2025": 13,
+     "eligible": true,
+     "round2026": 13,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 239,
+     "adp": 165.1,
+     "adpRound": 14,
+     "surplus": -1,
+     "undrafted": false
+    },
+    {
+     "name": "Chase McLaughlin",
+     "nflTeam": "TB",
+     "pos": "K",
+     "round2025": 14,
+     "eligible": true,
+     "round2026": 14,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 230,
+     "adp": 157.3,
+     "adpRound": 14,
+     "surplus": 0,
+     "undrafted": false
+    },
+    {
+     "name": "Rashod Bateman",
+     "nflTeam": "Bal",
+     "pos": "WR",
+     "round2025": 15,
+     "eligible": true,
+     "round2026": 15,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 246,
+     "adp": 148.8,
+     "adpRound": 13,
+     "surplus": 2,
+     "undrafted": false
+    },
+    {
+     "name": "Matthew Stafford",
+     "nflTeam": "LAR",
+     "pos": "QB",
+     "round2025": 17,
+     "eligible": true,
+     "round2026": 17,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 112,
+     "adp": 83.2,
+     "adpRound": 7,
+     "surplus": 10,
+     "undrafted": false
+    }
+   ]
+  },
+  {
+   "name": "CZA",
+   "roster": [
+    {
+     "name": "Kimani Vidal",
+     "nflTeam": "LAC",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 227,
+     "adp": 156.9,
+     "adpRound": 14,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Dontayvion Wicks",
+     "nflTeam": "Phi",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 192,
+     "adp": 174.8,
+     "adpRound": 15,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Darius Slayton",
+     "nflTeam": "NYG",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 261,
+     "adp": 172.8,
+     "adpRound": 15,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Isaac TeSlaa",
+     "nflTeam": "Det",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 188,
+     "adp": 179.1,
+     "adpRound": 15,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Andy Borregales",
+     "nflTeam": "NE",
+     "pos": "K",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 223,
+     "adp": 151.4,
+     "adpRound": 13,
+     "surplus": 5,
+     "undrafted": false
+    },
+    {
+     "name": "Amon-Ra St. Brown",
+     "nflTeam": "Det",
+     "pos": "WR",
+     "round2025": 1,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 6,
+     "adp": 6.7,
+     "adpRound": 1,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Terry McLaurin",
+     "nflTeam": "Was",
+     "pos": "WR",
+     "round2025": 3,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 45,
+     "adp": 44.6,
+     "adpRound": 4,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Chris Godwin Jr.",
+     "nflTeam": "TB",
+     "pos": "WR",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 87,
+     "adp": 87.4,
+     "adpRound": 8,
+     "surplus": -2,
+     "undrafted": false
+    },
+    {
+     "name": "Stefon Diggs",
+     "nflTeam": "Was",
+     "pos": "WR",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 101,
+     "adp": 92.5,
+     "adpRound": 8,
+     "surplus": -2,
+     "undrafted": false
+    },
+    {
+     "name": "Dak Prescott",
+     "nflTeam": "Dal",
+     "pos": "QB",
+     "round2025": 7,
+     "eligible": true,
+     "round2026": 7,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 83,
+     "adp": 65.5,
+     "adpRound": 6,
+     "surplus": 1,
+     "undrafted": false
+    },
+    {
+     "name": "Brock Bowers",
+     "nflTeam": "LV",
+     "pos": "TE",
+     "round2025": 8,
+     "eligible": true,
+     "round2026": 8,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 21,
+     "adp": 39.7,
+     "adpRound": 4,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Brian Robinson",
+     "nflTeam": "Atl",
+     "pos": "RB",
+     "round2025": 10,
+     "eligible": true,
+     "round2026": 10,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 152,
+     "adp": 164.8,
+     "adpRound": 14,
+     "surplus": -4,
+     "undrafted": false
+    },
+    {
+     "name": "Tyler Allgeier",
+     "nflTeam": "Ari",
+     "pos": "RB",
+     "round2025": 11,
+     "eligible": true,
+     "round2026": 11,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 137,
+     "adp": 167.9,
+     "adpRound": 14,
+     "surplus": -3,
+     "undrafted": false
+    },
+    {
+     "name": "Broncos",
+     "nflTeam": "Den",
+     "pos": "DEF",
+     "round2025": 12,
+     "eligible": true,
+     "round2026": 12,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 156,
+     "adp": 92.1,
+     "adpRound": 8,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Geno Smith",
+     "nflTeam": "NYJ",
+     "pos": "QB",
+     "round2025": 13,
+     "eligible": true,
+     "round2026": 13,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 241,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Jonnu Smith",
+     "nflTeam": "Pit",
+     "pos": "TE",
+     "round2025": 16,
+     "eligible": true,
+     "round2026": 16,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 361,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Woody Marks",
+     "nflTeam": "Hou",
+     "pos": "RB",
+     "round2025": 17,
+     "eligible": true,
+     "round2026": 17,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 139,
+     "adp": 150.5,
+     "adpRound": 13,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Wil Lutz",
+     "nflTeam": "Den",
+     "pos": "K",
+     "round2025": 17,
+     "eligible": true,
+     "round2026": 17,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 273,
+     "adp": 164.1,
+     "adpRound": 14,
+     "surplus": 3,
+     "undrafted": false
+    }
+   ]
+  },
+  {
+   "name": "Combover Crackas",
+   "roster": [
+    {
+     "name": "Darren Waller",
+     "nflTeam": "Car",
+     "pos": "TE",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 353,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Tre Tucker",
+     "nflTeam": "LV",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 178,
+     "adp": 133.6,
+     "adpRound": 12,
+     "surplus": 6,
+     "undrafted": false
+    },
+    {
+     "name": "C.J. Stroud",
+     "nflTeam": "Hou",
+     "pos": "QB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 160,
+     "adp": 161.2,
+     "adpRound": 14,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Ka'imi Fairbairn",
+     "nflTeam": "Hou",
+     "pos": "K",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 177,
+     "adp": 140.2,
+     "adpRound": 12,
+     "surplus": 6,
+     "undrafted": false
+    },
+    {
+     "name": "Seahawks",
+     "nflTeam": "Sea",
+     "pos": "DEF",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 159,
+     "adp": 96.3,
+     "adpRound": 9,
+     "surplus": 9,
+     "undrafted": false
+    },
+    {
+     "name": "Jahmyr Gibbs",
+     "nflTeam": "Det",
+     "pos": "RB",
+     "round2025": 1,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 1,
+     "adp": 1.8,
+     "adpRound": 1,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Josh Allen",
+     "nflTeam": "Buf",
+     "pos": "QB",
+     "round2025": 2,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 26,
+     "adp": 28.8,
+     "adpRound": 3,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Mike Evans",
+     "nflTeam": "SF",
+     "pos": "WR",
+     "round2025": 3,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 55,
+     "adp": 56.6,
+     "adpRound": 5,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "RJ Harvey",
+     "nflTeam": "Den",
+     "pos": "RB",
+     "round2025": 4,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 97,
+     "adp": 83.5,
+     "adpRound": 7,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Jameson Williams",
+     "nflTeam": "Det",
+     "pos": "WR",
+     "round2025": 5,
+     "eligible": true,
+     "round2026": 5,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 58,
+     "adp": 44.6,
+     "adpRound": 4,
+     "surplus": 1,
+     "undrafted": false
+    },
+    {
+     "name": "Jerry Jeudy",
+     "nflTeam": "Cle",
+     "pos": "WR",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 197,
+     "adp": 134.3,
+     "adpRound": 12,
+     "surplus": -6,
+     "undrafted": false
+    },
+    {
+     "name": "Brian Thomas Jr.",
+     "nflTeam": "Jax",
+     "pos": "WR",
+     "round2025": 7,
+     "eligible": true,
+     "round2026": 5,
+     "reason": "2nd year keeping him — 2-round penalty (Rd 7 → Rd 5)",
+     "keeperYear": 1,
+     "finalRank": 70,
+     "adp": 75.7,
+     "adpRound": 7,
+     "surplus": -2,
+     "undrafted": false
+    },
+    {
+     "name": "Jayden Reed",
+     "nflTeam": "GB",
+     "pos": "WR",
+     "round2025": 8,
+     "eligible": true,
+     "round2026": 8,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 98,
+     "adp": 95.1,
+     "adpRound": 8,
+     "surplus": 0,
+     "undrafted": false
+    },
+    {
+     "name": "Cam Skattebo",
+     "nflTeam": "NYG",
+     "pos": "RB",
+     "round2025": 9,
+     "eligible": true,
+     "round2026": 9,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 46,
+     "adp": 32.9,
+     "adpRound": 3,
+     "surplus": 6,
+     "undrafted": false
+    },
+    {
+     "name": "Colston Loveland",
+     "nflTeam": "Chi",
+     "pos": "TE",
+     "round2025": 10,
+     "eligible": true,
+     "round2026": 10,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 39,
+     "adp": 58.8,
+     "adpRound": 5,
+     "surplus": 5,
+     "undrafted": false
+    },
+    {
+     "name": "Nick Chubb",
+     "nflTeam": "Hou",
+     "pos": "RB",
+     "round2025": 11,
+     "eligible": true,
+     "round2026": 11,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 284,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Brandon Aiyuk",
+     "nflTeam": "SF",
+     "pos": "WR",
+     "round2025": 12,
+     "eligible": true,
+     "round2026": 12,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 301,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Kareem Hunt",
+     "nflTeam": "KC",
+     "pos": "RB",
+     "round2025": 18,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 356,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    }
+   ]
+  },
+  {
+   "name": "DaddyPHATsacs",
+   "roster": [
+    {
+     "name": "Aaron Rodgers",
+     "nflTeam": "Pit",
+     "pos": "QB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 259,
+     "adp": 174.6,
+     "adpRound": 15,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Samaje Perine",
+     "nflTeam": "Cin",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 289,
+     "adp": 173.7,
+     "adpRound": 15,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Brandon McManus",
+     "nflTeam": "GB",
+     "pos": "K",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 365,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Christian McCaffrey",
+     "nflTeam": "SF",
+     "pos": "RB",
+     "round2025": 1,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 5,
+     "adp": 6.2,
+     "adpRound": 1,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Ladd McConkey",
+     "nflTeam": "LAC",
+     "pos": "WR",
+     "round2025": 2,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 42,
+     "adp": 42.0,
+     "adpRound": 4,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "DJ Moore",
+     "nflTeam": "Buf",
+     "pos": "WR",
+     "round2025": 4,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 56,
+     "adp": 52.0,
+     "adpRound": 5,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Jakobi Meyers",
+     "nflTeam": "Jax",
+     "pos": "WR",
+     "round2025": 5,
+     "eligible": true,
+     "round2026": 5,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 118,
+     "adp": 80.6,
+     "adpRound": 7,
+     "surplus": -2,
+     "undrafted": false
+    },
+    {
+     "name": "Tyrone Tracy Jr.",
+     "nflTeam": "NYG",
+     "pos": "RB",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 133,
+     "adp": 152.7,
+     "adpRound": 13,
+     "surplus": -7,
+     "undrafted": false
+    },
+    {
+     "name": "Quinshon Judkins",
+     "nflTeam": "Cle",
+     "pos": "RB",
+     "round2025": 8,
+     "eligible": true,
+     "round2026": 8,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 52,
+     "adp": 51.0,
+     "adpRound": 5,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Jauan Jennings",
+     "nflTeam": "Min",
+     "pos": "WR",
+     "round2025": 9,
+     "eligible": true,
+     "round2026": 9,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 199,
+     "adp": 145.6,
+     "adpRound": 13,
+     "surplus": -4,
+     "undrafted": false
+    },
+    {
+     "name": "Jake Ferguson",
+     "nflTeam": "Dal",
+     "pos": "TE",
+     "round2025": 11,
+     "eligible": true,
+     "round2026": 11,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 136,
+     "adp": 137.2,
+     "adpRound": 12,
+     "surplus": -1,
+     "undrafted": false
+    },
+    {
+     "name": "Steelers",
+     "nflTeam": "Pit",
+     "pos": "DEF",
+     "round2025": 12,
+     "eligible": true,
+     "round2026": 12,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 185,
+     "adp": 146.6,
+     "adpRound": 13,
+     "surplus": -1,
+     "undrafted": false
+    },
+    {
+     "name": "Harrison Butker",
+     "nflTeam": "KC",
+     "pos": "K",
+     "round2025": 14,
+     "eligible": true,
+     "round2026": 14,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 245,
+     "adp": 161.4,
+     "adpRound": 14,
+     "surplus": 0,
+     "undrafted": false
+    },
+    {
+     "name": "Hunter Henry",
+     "nflTeam": "NE",
+     "pos": "TE",
+     "round2025": 15,
+     "eligible": true,
+     "round2026": 15,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 164,
+     "adp": 156.6,
+     "adpRound": 14,
+     "surplus": 1,
+     "undrafted": false
+    },
+    {
+     "name": "Trevor Lawrence",
+     "nflTeam": "Jax",
+     "pos": "QB",
+     "round2025": 17,
+     "eligible": true,
+     "round2026": 17,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 82,
+     "adp": 90.8,
+     "adpRound": 8,
+     "surplus": 9,
+     "undrafted": false
+    },
+    {
+     "name": "Puka Nacua",
+     "nflTeam": "LAR",
+     "pos": "WR",
+     "round2025": 17,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Already kept 2 years (2025 note: \"2025 Keeper, 17th round, last year\") - must return to draft pool",
+     "keeperYear": 2,
+     "finalRank": 4,
+     "adp": 3.1,
+     "adpRound": 1,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Romeo Doubs",
+     "nflTeam": "NE",
+     "pos": "WR",
+     "round2025": 18,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 125,
+     "adp": 113.3,
+     "adpRound": 10,
+     "surplus": 8,
+     "undrafted": false
+    },
+    {
+     "name": "Dolphins",
+     "nflTeam": "Mia",
+     "pos": "DEF",
+     "round2025": 18,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 2037,
+     "adp": 179.4,
+     "adpRound": 15,
+     "surplus": 3,
+     "undrafted": false
+    }
+   ]
+  },
+  {
+   "name": "Fantasy football team",
+   "roster": [
+    {
+     "name": "Sam Darnold",
+     "nflTeam": "Sea",
+     "pos": "QB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 154,
+     "adp": 143.5,
+     "adpRound": 12,
+     "surplus": 6,
+     "undrafted": false
+    },
+    {
+     "name": "AJ Barner",
+     "nflTeam": "Sea",
+     "pos": "TE",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 183,
+     "adp": 163.2,
+     "adpRound": 14,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Troy Franklin",
+     "nflTeam": "Den",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 264,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Michael Carter",
+     "nflTeam": "Ten",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 369,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Audric Estime",
+     "nflTeam": "NO",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 378,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Tyler Shough",
+     "nflTeam": "NO",
+     "pos": "QB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 135,
+     "adp": 136.9,
+     "adpRound": 12,
+     "surplus": 6,
+     "undrafted": false
+    },
+    {
+     "name": "Jason Myers",
+     "nflTeam": "Sea",
+     "pos": "K",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 190,
+     "adp": 138.2,
+     "adpRound": 12,
+     "surplus": 6,
+     "undrafted": false
+    },
+    {
+     "name": "Drake London",
+     "nflTeam": "Atl",
+     "pos": "WR",
+     "round2025": 1,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 17,
+     "adp": 10.2,
+     "adpRound": 1,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Josh Jacobs",
+     "nflTeam": "GB",
+     "pos": "RB",
+     "round2025": 2,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 36,
+     "adp": 27.8,
+     "adpRound": 3,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Marvin Harrison Jr.",
+     "nflTeam": "Ari",
+     "pos": "WR",
+     "round2025": 3,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 69,
+     "adp": 64.4,
+     "adpRound": 6,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Breece Hall",
+     "nflTeam": "NYJ",
+     "pos": "RB",
+     "round2025": 4,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 33,
+     "adp": 28.0,
+     "adpRound": 3,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "George Pickens",
+     "nflTeam": "Dal",
+     "pos": "WR",
+     "round2025": 5,
+     "eligible": true,
+     "round2026": 5,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 22,
+     "adp": 20.2,
+     "adpRound": 2,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Ricky Pearsall",
+     "nflTeam": "SF",
+     "pos": "WR",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 359,
+     "adp": 112.5,
+     "adpRound": 10,
+     "surplus": -4,
+     "undrafted": false
+    },
+    {
+     "name": "Matthew Golden",
+     "nflTeam": "GB",
+     "pos": "WR",
+     "round2025": 8,
+     "eligible": true,
+     "round2026": 8,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 114,
+     "adp": 120.0,
+     "adpRound": 10,
+     "surplus": -2,
+     "undrafted": false
+    },
+    {
+     "name": "Dalton Kincaid",
+     "nflTeam": "Buf",
+     "pos": "TE",
+     "round2025": 11,
+     "eligible": true,
+     "round2026": 11,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 109,
+     "adp": 152.9,
+     "adpRound": 13,
+     "surplus": -2,
+     "undrafted": false
+    },
+    {
+     "name": "Eagles",
+     "nflTeam": "Phi",
+     "pos": "DEF",
+     "round2025": 13,
+     "eligible": true,
+     "round2026": 13,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 173,
+     "adp": 131.2,
+     "adpRound": 11,
+     "surplus": 2,
+     "undrafted": false
+    },
+    {
+     "name": "Rico Dowdle",
+     "nflTeam": "Pit",
+     "pos": "RB",
+     "round2025": 15,
+     "eligible": true,
+     "round2026": 15,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 89,
+     "adp": 70.5,
+     "adpRound": 6,
+     "surplus": 9,
+     "undrafted": false
+    },
+    {
+     "name": "Bucky Irving",
+     "nflTeam": "TB",
+     "pos": "RB",
+     "round2025": 16,
+     "eligible": true,
+     "round2026": 14,
+     "reason": "2nd year keeping him — 2-round penalty (Rd 16 → Rd 14)",
+     "keeperYear": 1,
+     "finalRank": 59,
+     "adp": 44.4,
+     "adpRound": 4,
+     "surplus": 10,
+     "undrafted": false
+    }
+   ]
+  },
+  {
+   "name": "JAVA The Hutt",
+   "roster": [
+    {
+     "name": "Harold Fannin Jr.",
+     "nflTeam": "Cle",
+     "pos": "TE",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 80,
+     "adp": 80.8,
+     "adpRound": 7,
+     "surplus": 11,
+     "undrafted": false
+    },
+    {
+     "name": "Christian Watson",
+     "nflTeam": "GB",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 50,
+     "adp": 67.0,
+     "adpRound": 6,
+     "surplus": 12,
+     "undrafted": false
+    },
+    {
+     "name": "Bam Knight",
+     "nflTeam": "Ari",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 2023,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Tez Johnson",
+     "nflTeam": "TB",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 2056,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Jaguars",
+     "nflTeam": "Jax",
+     "pos": "DEF",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 182,
+     "adp": 154.7,
+     "adpRound": 13,
+     "surplus": 5,
+     "undrafted": false
+    },
+    {
+     "name": "Saquon Barkley",
+     "nflTeam": "Phi",
+     "pos": "RB",
+     "round2025": 1,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 12,
+     "adp": 20.0,
+     "adpRound": 2,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Omarion Hampton",
+     "nflTeam": "LAC",
+     "pos": "RB",
+     "round2025": 2,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 16,
+     "adp": 19.9,
+     "adpRound": 2,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "James Cook III",
+     "nflTeam": "Buf",
+     "pos": "RB",
+     "round2025": 3,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 10,
+     "adp": 13.6,
+     "adpRound": 2,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "DK Metcalf",
+     "nflTeam": "Pit",
+     "pos": "WR",
+     "round2025": 4,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 81,
+     "adp": 65.2,
+     "adpRound": 6,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Tetairoa McMillan",
+     "nflTeam": "Car",
+     "pos": "WR",
+     "round2025": 5,
+     "eligible": true,
+     "round2026": 5,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 41,
+     "adp": 33.9,
+     "adpRound": 3,
+     "surplus": 2,
+     "undrafted": false
+    },
+    {
+     "name": "Emeka Egbuka",
+     "nflTeam": "TB",
+     "pos": "WR",
+     "round2025": 7,
+     "eligible": true,
+     "round2026": 7,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 38,
+     "adp": 36.0,
+     "adpRound": 3,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Caleb Williams",
+     "nflTeam": "Chi",
+     "pos": "QB",
+     "round2025": 8,
+     "eligible": true,
+     "round2026": 8,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 72,
+     "adp": 101.1,
+     "adpRound": 9,
+     "surplus": -1,
+     "undrafted": false
+    },
+    {
+     "name": "Jordan Mason",
+     "nflTeam": "Min",
+     "pos": "RB",
+     "round2025": 9,
+     "eligible": true,
+     "round2026": 9,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 107,
+     "adp": 123.4,
+     "adpRound": 11,
+     "surplus": -2,
+     "undrafted": false
+    },
+    {
+     "name": "Justin Herbert",
+     "nflTeam": "LAC",
+     "pos": "QB",
+     "round2025": 12,
+     "eligible": true,
+     "round2026": 12,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 74,
+     "adp": 104.3,
+     "adpRound": 9,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Luther Burden III",
+     "nflTeam": "Chi",
+     "pos": "WR",
+     "round2025": 12,
+     "eligible": true,
+     "round2026": 12,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 43,
+     "adp": 56.8,
+     "adpRound": 5,
+     "surplus": 7,
+     "undrafted": false
+    },
+    {
+     "name": "Bhayshul Tuten",
+     "nflTeam": "Jax",
+     "pos": "RB",
+     "round2025": 13,
+     "eligible": true,
+     "round2026": 13,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 54,
+     "adp": 53.9,
+     "adpRound": 5,
+     "surplus": 8,
+     "undrafted": false
+    },
+    {
+     "name": "Cameron Dicker",
+     "nflTeam": "LAC",
+     "pos": "K",
+     "round2025": 14,
+     "eligible": true,
+     "round2026": 14,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 180,
+     "adp": 144.4,
+     "adpRound": 13,
+     "surplus": 1,
+     "undrafted": false
+    },
+    {
+     "name": "Patriots",
+     "nflTeam": "NE",
+     "pos": "DEF",
+     "round2025": 14,
+     "eligible": true,
+     "round2026": 14,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 174,
+     "adp": 130.9,
+     "adpRound": 11,
+     "surplus": 3,
+     "undrafted": false
+    }
+   ]
+  },
+  {
+   "name": "Pappy Time",
+   "roster": [
+    {
+     "name": "Michael Wilson",
+     "nflTeam": "Ari",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 91,
+     "adp": 83.8,
+     "adpRound": 7,
+     "surplus": 11,
+     "undrafted": false
+    },
+    {
+     "name": "Dalton Schultz",
+     "nflTeam": "Hou",
+     "pos": "TE",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 207,
+     "adp": 155.7,
+     "adpRound": 13,
+     "surplus": 5,
+     "undrafted": false
+    },
+    {
+     "name": "Calvin Austin III",
+     "nflTeam": "NYG",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 349,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Kayshon Boutte",
+     "nflTeam": "NE",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 237,
+     "adp": 172.5,
+     "adpRound": 15,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Browns",
+     "nflTeam": "Cle",
+     "pos": "DEF",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 290,
+     "adp": 169.5,
+     "adpRound": 15,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "CeeDee Lamb",
+     "nflTeam": "Dal",
+     "pos": "WR",
+     "round2025": 1,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 9,
+     "adp": 11.1,
+     "adpRound": 1,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Jonathan Taylor",
+     "nflTeam": "Ind",
+     "pos": "RB",
+     "round2025": 2,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 8,
+     "adp": 7.4,
+     "adpRound": 1,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Jalen Hurts",
+     "nflTeam": "Phi",
+     "pos": "QB",
+     "round2025": 3,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 64,
+     "adp": 77.0,
+     "adpRound": 7,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "TreVeyon Henderson",
+     "nflTeam": "NE",
+     "pos": "RB",
+     "round2025": 4,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 65,
+     "adp": 57.9,
+     "adpRound": 5,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Deebo Samuel Sr.",
+     "nflTeam": "SF",
+     "pos": "WR",
+     "round2025": 5,
+     "eligible": true,
+     "round2026": 5,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 141,
+     "adp": 104.8,
+     "adpRound": 9,
+     "surplus": -4,
+     "undrafted": false
+    },
+    {
+     "name": "Jaylen Warren",
+     "nflTeam": "Pit",
+     "pos": "RB",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 73,
+     "adp": 66.8,
+     "adpRound": 6,
+     "surplus": 0,
+     "undrafted": false
+    },
+    {
+     "name": "Keon Coleman",
+     "nflTeam": "Buf",
+     "pos": "WR",
+     "round2025": 7,
+     "eligible": true,
+     "round2026": 7,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 307,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "David Njoku",
+     "nflTeam": "LAC",
+     "pos": "TE",
+     "round2025": 9,
+     "eligible": true,
+     "round2026": 9,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 309,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Tucker Kraft",
+     "nflTeam": "GB",
+     "pos": "TE",
+     "round2025": 10,
+     "eligible": true,
+     "round2026": 10,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 71,
+     "adp": 104.2,
+     "adpRound": 9,
+     "surplus": 1,
+     "undrafted": false
+    },
+    {
+     "name": "Adonai Mitchell",
+     "nflTeam": "NYJ",
+     "pos": "WR",
+     "round2025": 10,
+     "eligible": true,
+     "round2026": 10,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 153,
+     "adp": 159.9,
+     "adpRound": 14,
+     "surplus": -4,
+     "undrafted": false
+    },
+    {
+     "name": "Jared Goff",
+     "nflTeam": "Det",
+     "pos": "QB",
+     "round2025": 11,
+     "eligible": true,
+     "round2026": 11,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 115,
+     "adp": 107.0,
+     "adpRound": 9,
+     "surplus": 2,
+     "undrafted": false
+    },
+    {
+     "name": "Brandon Aubrey",
+     "nflTeam": "Dal",
+     "pos": "K",
+     "round2025": 12,
+     "eligible": true,
+     "round2026": 12,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 165,
+     "adp": 130.2,
+     "adpRound": 11,
+     "surplus": 1,
+     "undrafted": false
+    },
+    {
+     "name": "Lions",
+     "nflTeam": "Det",
+     "pos": "DEF",
+     "round2025": 15,
+     "eligible": true,
+     "round2026": 15,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 225,
+     "adp": 130.7,
+     "adpRound": 11,
+     "surplus": 4,
+     "undrafted": false
+    }
+   ]
+  },
+  {
+   "name": "Rushin’ Roulettes",
+   "roster": [
+    {
+     "name": "Luke Musgrave",
+     "nflTeam": "GB",
+     "pos": "TE",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 2094,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Alec Pierce",
+     "nflTeam": "Ind",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 79,
+     "adp": 57.6,
+     "adpRound": 5,
+     "surplus": 13,
+     "undrafted": false
+    },
+    {
+     "name": "Chris Rodriguez Jr.",
+     "nflTeam": "Jax",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 117,
+     "adp": 162.1,
+     "adpRound": 14,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Bears",
+     "nflTeam": "Chi",
+     "pos": "DEF",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 263,
+     "adp": 172.2,
+     "adpRound": 15,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Derrick Henry",
+     "nflTeam": "Bal",
+     "pos": "RB",
+     "round2025": 1,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 19,
+     "adp": 16.6,
+     "adpRound": 2,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Lamar Jackson",
+     "nflTeam": "Bal",
+     "pos": "QB",
+     "round2025": 2,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 48,
+     "adp": 54.5,
+     "adpRound": 5,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Alvin Kamara",
+     "nflTeam": "NO",
+     "pos": "RB",
+     "round2025": 3,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 143,
+     "adp": 140.2,
+     "adpRound": 12,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "D'Andre Swift",
+     "nflTeam": "Chi",
+     "pos": "RB",
+     "round2025": 4,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 47,
+     "adp": 45.3,
+     "adpRound": 4,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Chris Olave",
+     "nflTeam": "NO",
+     "pos": "WR",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 29,
+     "adp": 21.4,
+     "adpRound": 2,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Cooper Kupp",
+     "nflTeam": "Sea",
+     "pos": "WR",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 282,
+     "adp": 158.5,
+     "adpRound": 14,
+     "surplus": -8,
+     "undrafted": false
+    },
+    {
+     "name": "Jaxon Smith-Njigba",
+     "nflTeam": "Sea",
+     "pos": "WR",
+     "round2025": 7,
+     "eligible": true,
+     "round2026": 7,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 7,
+     "adp": 5.5,
+     "adpRound": 1,
+     "surplus": 6,
+     "undrafted": false
+    },
+    {
+     "name": "Travis Etienne Jr.",
+     "nflTeam": "NO",
+     "pos": "RB",
+     "round2025": 8,
+     "eligible": true,
+     "round2026": 8,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 44,
+     "adp": 40.7,
+     "adpRound": 4,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Javonte Williams",
+     "nflTeam": "Dal",
+     "pos": "RB",
+     "round2025": 9,
+     "eligible": true,
+     "round2026": 9,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 37,
+     "adp": 36.8,
+     "adpRound": 4,
+     "surplus": 5,
+     "undrafted": false
+    },
+    {
+     "name": "Tyler Warren",
+     "nflTeam": "Ind",
+     "pos": "TE",
+     "round2025": 10,
+     "eligible": true,
+     "round2026": 10,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 49,
+     "adp": 65.2,
+     "adpRound": 6,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Christian Kirk",
+     "nflTeam": "SF",
+     "pos": "WR",
+     "round2025": 11,
+     "eligible": true,
+     "round2026": 11,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 323,
+     "adp": 186.9,
+     "adpRound": 16,
+     "surplus": -5,
+     "undrafted": false
+    },
+    {
+     "name": "Jake Elliott",
+     "nflTeam": "Phi",
+     "pos": "K",
+     "round2025": 15,
+     "eligible": true,
+     "round2026": 15,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 286,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Drake Maye",
+     "nflTeam": "NE",
+     "pos": "QB",
+     "round2025": 16,
+     "eligible": true,
+     "round2026": 16,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 60,
+     "adp": 50.0,
+     "adpRound": 5,
+     "surplus": 11,
+     "undrafted": false
+    },
+    {
+     "name": "DeAndre Hopkins",
+     "nflTeam": "Bal",
+     "pos": "WR",
+     "round2025": 18,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 2069,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    }
+   ]
+  },
+  {
+   "name": "SavaHorse RydaCouden",
+   "roster": [
+    {
+     "name": "Jacoby Brissett",
+     "nflTeam": "Ari",
+     "pos": "QB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 216,
+     "adp": 168.4,
+     "adpRound": 15,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Brenton Strange",
+     "nflTeam": "Jax",
+     "pos": "TE",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 157,
+     "adp": 164.0,
+     "adpRound": 14,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Devin Neal",
+     "nflTeam": "NO",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 296,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Emanuel Wilson",
+     "nflTeam": "Sea",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 256,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Colby Parkinson",
+     "nflTeam": "LAR",
+     "pos": "TE",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 280,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Jawhar Jordan",
+     "nflTeam": "Hou",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 336,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Justin Jefferson",
+     "nflTeam": "Min",
+     "pos": "WR",
+     "round2025": 1,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 11,
+     "adp": 13.9,
+     "adpRound": 2,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Chuba Hubbard",
+     "nflTeam": "Car",
+     "pos": "RB",
+     "round2025": 3,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 78,
+     "adp": 75.0,
+     "adpRound": 7,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Zay Flowers",
+     "nflTeam": "Bal",
+     "pos": "WR",
+     "round2025": 4,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 32,
+     "adp": 25.6,
+     "adpRound": 3,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Isiah Pacheco",
+     "nflTeam": "Det",
+     "pos": "RB",
+     "round2025": 5,
+     "eligible": true,
+     "round2026": 5,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 151,
+     "adp": 151.1,
+     "adpRound": 13,
+     "surplus": -8,
+     "undrafted": false
+    },
+    {
+     "name": "T.J. Hockenson",
+     "nflTeam": "Min",
+     "pos": "TE",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 195,
+     "adp": 163.2,
+     "adpRound": 14,
+     "surplus": -8,
+     "undrafted": false
+    },
+    {
+     "name": "Michael Pittman Jr.",
+     "nflTeam": "Pit",
+     "pos": "WR",
+     "round2025": 7,
+     "eligible": true,
+     "round2026": 7,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 104,
+     "adp": 72.9,
+     "adpRound": 7,
+     "surplus": 0,
+     "undrafted": false
+    },
+    {
+     "name": "Jacory Croskey-Merritt",
+     "nflTeam": "Was",
+     "pos": "RB",
+     "round2025": 9,
+     "eligible": true,
+     "round2026": 9,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 105,
+     "adp": 112.6,
+     "adpRound": 10,
+     "surplus": -1,
+     "undrafted": false
+    },
+    {
+     "name": "Darnell Mooney",
+     "nflTeam": "NYG",
+     "pos": "WR",
+     "round2025": 10,
+     "eligible": true,
+     "round2026": 10,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 232,
+     "adp": 185.4,
+     "adpRound": 16,
+     "surplus": -6,
+     "undrafted": false
+    },
+    {
+     "name": "Hollywood Brown",
+     "nflTeam": "Phi",
+     "pos": "WR",
+     "round2025": 11,
+     "eligible": true,
+     "round2026": 11,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 339,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Kyle Pitts Sr.",
+     "nflTeam": "Atl",
+     "pos": "TE",
+     "round2025": 13,
+     "eligible": true,
+     "round2026": 13,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 84,
+     "adp": 77.6,
+     "adpRound": 7,
+     "surplus": 6,
+     "undrafted": false
+    },
+    {
+     "name": "Brock Purdy",
+     "nflTeam": "SF",
+     "pos": "QB",
+     "round2025": 14,
+     "eligible": true,
+     "round2026": 14,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 92,
+     "adp": 83.6,
+     "adpRound": 7,
+     "surplus": 7,
+     "undrafted": false
+    },
+    {
+     "name": "Texans",
+     "nflTeam": "Hou",
+     "pos": "DEF",
+     "round2025": 17,
+     "eligible": true,
+     "round2026": 17,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 147,
+     "adp": 104.0,
+     "adpRound": 9,
+     "surplus": 8,
+     "undrafted": false
+    }
+   ]
+  },
+  {
+   "name": "Seal team Nix",
+   "roster": [
+    {
+     "name": "Kenny Gainwell",
+     "nflTeam": "TB",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 108,
+     "adp": 88.5,
+     "adpRound": 8,
+     "surplus": 10,
+     "undrafted": false
+    },
+    {
+     "name": "Theo Johnson",
+     "nflTeam": "NYG",
+     "pos": "TE",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 331,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Parker Washington",
+     "nflTeam": "Jax",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 63,
+     "adp": 68.6,
+     "adpRound": 6,
+     "surplus": 12,
+     "undrafted": false
+    },
+    {
+     "name": "Tory Horton",
+     "nflTeam": "Sea",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 258,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Buccaneers",
+     "nflTeam": "TB",
+     "pos": "DEF",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 295,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Ashton Jeanty",
+     "nflTeam": "LV",
+     "pos": "RB",
+     "round2025": 1,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 13,
+     "adp": 14.4,
+     "adpRound": 2,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "A.J. Brown",
+     "nflTeam": "NE",
+     "pos": "WR",
+     "round2025": 2,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 23,
+     "adp": 17.3,
+     "adpRound": 2,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Kenneth Walker III",
+     "nflTeam": "KC",
+     "pos": "RB",
+     "round2025": 3,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 14,
+     "adp": 25.2,
+     "adpRound": 3,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Xavier Worthy",
+     "nflTeam": "KC",
+     "pos": "WR",
+     "round2025": 4,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 120,
+     "adp": 106.9,
+     "adpRound": 9,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Rome Odunze",
+     "nflTeam": "Chi",
+     "pos": "WR",
+     "round2025": 5,
+     "eligible": true,
+     "round2026": 5,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 57,
+     "adp": 49.2,
+     "adpRound": 5,
+     "surplus": 0,
+     "undrafted": false
+    },
+    {
+     "name": "Tony Pollard",
+     "nflTeam": "Ten",
+     "pos": "RB",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 77,
+     "adp": 66.9,
+     "adpRound": 6,
+     "surplus": 0,
+     "undrafted": false
+    },
+    {
+     "name": "Mark Andrews",
+     "nflTeam": "Bal",
+     "pos": "TE",
+     "round2025": 7,
+     "eligible": true,
+     "round2026": 7,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 121,
+     "adp": 140.2,
+     "adpRound": 12,
+     "surplus": -5,
+     "undrafted": false
+    },
+    {
+     "name": "Bo Nix",
+     "nflTeam": "Den",
+     "pos": "QB",
+     "round2025": 8,
+     "eligible": true,
+     "round2026": 8,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 99,
+     "adp": 119.7,
+     "adpRound": 10,
+     "surplus": -2,
+     "undrafted": false
+    },
+    {
+     "name": "Keenan Allen",
+     "nflTeam": "LAC",
+     "pos": "WR",
+     "round2025": 9,
+     "eligible": true,
+     "round2026": 9,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 271,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Nico Collins",
+     "nflTeam": "Hou",
+     "pos": "WR",
+     "round2025": 10,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Already kept 2 years (2025 note: \"2025 keeper, last year, 10th round\") - must return to draft pool",
+     "keeperYear": 2,
+     "finalRank": 20,
+     "adp": 23.1,
+     "adpRound": 2,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Jordan Love",
+     "nflTeam": "GB",
+     "pos": "QB",
+     "round2025": 13,
+     "eligible": true,
+     "round2026": 13,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 127,
+     "adp": 146.7,
+     "adpRound": 13,
+     "surplus": 0,
+     "undrafted": false
+    },
+    {
+     "name": "Tyler Loop",
+     "nflTeam": "Bal",
+     "pos": "K",
+     "round2025": 18,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 202,
+     "adp": 160.6,
+     "adpRound": 14,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Cowboys",
+     "nflTeam": "Dal",
+     "pos": "DEF",
+     "round2025": 18,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 231,
+     "adp": 167.1,
+     "adpRound": 14,
+     "surplus": 4,
+     "undrafted": false
+    }
+   ]
+  },
+  {
+   "name": "Str8 Outta Compton",
+   "roster": [
+    {
+     "name": "Jaxson Dart",
+     "nflTeam": "NYG",
+     "pos": "QB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 95,
+     "adp": 105.2,
+     "adpRound": 9,
+     "surplus": 9,
+     "undrafted": false
+    },
+    {
+     "name": "Juwan Johnson",
+     "nflTeam": "NO",
+     "pos": "TE",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 155,
+     "adp": 159.0,
+     "adpRound": 14,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Malik Washington",
+     "nflTeam": "Mia",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 219,
+     "adp": 154.9,
+     "adpRound": 13,
+     "surplus": 5,
+     "undrafted": false
+    },
+    {
+     "name": "Blake Corum",
+     "nflTeam": "LAR",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 93,
+     "adp": 122.5,
+     "adpRound": 11,
+     "surplus": 7,
+     "undrafted": false
+    },
+    {
+     "name": "Kyren Williams",
+     "nflTeam": "LAR",
+     "pos": "RB",
+     "round2025": 2,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 30,
+     "adp": 33.2,
+     "adpRound": 3,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Garrett Wilson",
+     "nflTeam": "NYJ",
+     "pos": "WR",
+     "round2025": 3,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 40,
+     "adp": 28.2,
+     "adpRound": 3,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "George Kittle",
+     "nflTeam": "SF",
+     "pos": "TE",
+     "round2025": 4,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 94,
+     "adp": 112.8,
+     "adpRound": 10,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "David Montgomery",
+     "nflTeam": "Hou",
+     "pos": "RB",
+     "round2025": 5,
+     "eligible": true,
+     "round2026": 5,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 53,
+     "adp": 63.9,
+     "adpRound": 6,
+     "surplus": -1,
+     "undrafted": false
+    },
+    {
+     "name": "Baker Mayfield",
+     "nflTeam": "TB",
+     "pos": "QB",
+     "round2025": 6,
+     "eligible": true,
+     "round2026": 6,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 130,
+     "adp": 129.4,
+     "adpRound": 11,
+     "surplus": -5,
+     "undrafted": false
+    },
+    {
+     "name": "Jordan Addison",
+     "nflTeam": "Min",
+     "pos": "WR",
+     "round2025": 8,
+     "eligible": true,
+     "round2026": 8,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 96,
+     "adp": 101.8,
+     "adpRound": 9,
+     "surplus": -1,
+     "undrafted": false
+    },
+    {
+     "name": "Josh Downs",
+     "nflTeam": "Ind",
+     "pos": "WR",
+     "round2025": 9,
+     "eligible": true,
+     "round2026": 9,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 88,
+     "adp": 86.9,
+     "adpRound": 8,
+     "surplus": 1,
+     "undrafted": false
+    },
+    {
+     "name": "Jayden Higgins",
+     "nflTeam": "Hou",
+     "pos": "WR",
+     "round2025": 10,
+     "eligible": true,
+     "round2026": 10,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 123,
+     "adp": 131.7,
+     "adpRound": 11,
+     "surplus": -1,
+     "undrafted": false
+    },
+    {
+     "name": "Rachaad White",
+     "nflTeam": "Was",
+     "pos": "RB",
+     "round2025": 11,
+     "eligible": true,
+     "round2026": 11,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 106,
+     "adp": 103.0,
+     "adpRound": 9,
+     "surplus": 2,
+     "undrafted": false
+    },
+    {
+     "name": "J.K. Dobbins",
+     "nflTeam": "Den",
+     "pos": "RB",
+     "round2025": 12,
+     "eligible": true,
+     "round2026": 12,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 86,
+     "adp": 95.5,
+     "adpRound": 8,
+     "surplus": 4,
+     "undrafted": false
+    },
+    {
+     "name": "Ravens",
+     "nflTeam": "Bal",
+     "pos": "DEF",
+     "round2025": 13,
+     "eligible": true,
+     "round2026": 13,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 193,
+     "adp": 161.6,
+     "adpRound": 14,
+     "surplus": -1,
+     "undrafted": false
+    },
+    {
+     "name": "J.J. McCarthy",
+     "nflTeam": "Min",
+     "pos": "QB",
+     "round2025": 15,
+     "eligible": true,
+     "round2026": 15,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 2054,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Kyle Monangai",
+     "nflTeam": "Chi",
+     "pos": "RB",
+     "round2025": 17,
+     "eligible": true,
+     "round2026": 17,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 103,
+     "adp": 107.8,
+     "adpRound": 9,
+     "surplus": 8,
+     "undrafted": false
+    },
+    {
+     "name": "Evan McPherson",
+     "nflTeam": "Cin",
+     "pos": "K",
+     "round2025": 17,
+     "eligible": true,
+     "round2026": 17,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 201,
+     "adp": 168.5,
+     "adpRound": 15,
+     "surplus": 2,
+     "undrafted": false
+    }
+   ]
+  },
+  {
+   "name": "Tua Legit Tua Quit",
+   "roster": [
+    {
+     "name": "Quentin Johnston",
+     "nflTeam": "LAC",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 85,
+     "adp": 93.9,
+     "adpRound": 8,
+     "surplus": 10,
+     "undrafted": false
+    },
+    {
+     "name": "Oronde Gadsden",
+     "nflTeam": "LAC",
+     "pos": "TE",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 167,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "John Metchie III",
+     "nflTeam": "Car",
+     "pos": "WR",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 2062,
+     "adp": 121.9,
+     "adpRound": 11,
+     "surplus": 7,
+     "undrafted": false
+    },
+    {
+     "name": "Devin Singletary",
+     "nflTeam": "NYG",
+     "pos": "RB",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 333,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Rams",
+     "nflTeam": "LAR",
+     "pos": "DEF",
+     "round2025": null,
+     "eligible": true,
+     "round2026": 18,
+     "reason": "Waiver/FA add — costs an 18th-round pick",
+     "keeperYear": 0,
+     "finalRank": 161,
+     "adp": 125.1,
+     "adpRound": 11,
+     "surplus": 7,
+     "undrafted": false
+    },
+    {
+     "name": "Ja'Marr Chase",
+     "nflTeam": "Cin",
+     "pos": "WR",
+     "round2025": 1,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 1 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 3,
+     "adp": 3.9,
+     "adpRound": 1,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Joe Burrow",
+     "nflTeam": "Cin",
+     "pos": "QB",
+     "round2025": 2,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 61,
+     "adp": 56.3,
+     "adpRound": 5,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Chase Brown",
+     "nflTeam": "Cin",
+     "pos": "RB",
+     "round2025": 2,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 2 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 15,
+     "adp": 13.1,
+     "adpRound": 2,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Trey McBride",
+     "nflTeam": "Ari",
+     "pos": "TE",
+     "round2025": 3,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 3 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 25,
+     "adp": 33.4,
+     "adpRound": 3,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Jaylen Waddle",
+     "nflTeam": "Den",
+     "pos": "WR",
+     "round2025": 4,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Drafted in round 4 (rounds 1-4 are not keeper-eligible under league rules)",
+     "keeperYear": 0,
+     "finalRank": 35,
+     "adp": 46.6,
+     "adpRound": 4,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Rashee Rice",
+     "nflTeam": "KC",
+     "pos": "WR",
+     "round2025": 5,
+     "eligible": true,
+     "round2026": 5,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 34,
+     "adp": 13.6,
+     "adpRound": 2,
+     "surplus": 3,
+     "undrafted": false
+    },
+    {
+     "name": "Travis Kelce",
+     "nflTeam": "KC",
+     "pos": "TE",
+     "round2025": 7,
+     "eligible": true,
+     "round2026": 7,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 113,
+     "adp": 107.5,
+     "adpRound": 9,
+     "surplus": -2,
+     "undrafted": false
+    },
+    {
+     "name": "Zach Charbonnet",
+     "nflTeam": "Sea",
+     "pos": "RB",
+     "round2025": 8,
+     "eligible": true,
+     "round2026": 8,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 140,
+     "adp": 140.3,
+     "adpRound": 12,
+     "surplus": -4,
+     "undrafted": false
+    },
+    {
+     "name": "De'Von Achane",
+     "nflTeam": "Mia",
+     "pos": "RB",
+     "round2025": 9,
+     "eligible": false,
+     "round2026": null,
+     "reason": "Already kept 2 years (2025 note: \"2025 Keeper, last year, will be 9th round pick\") - must return to draft pool",
+     "keeperYear": 2,
+     "finalRank": 18,
+     "adp": 10.3,
+     "adpRound": 1,
+     "surplus": null,
+     "undrafted": false
+    },
+    {
+     "name": "Jaylen Wright",
+     "nflTeam": "Mia",
+     "pos": "RB",
+     "round2025": 12,
+     "eligible": true,
+     "round2026": 12,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 294,
+     "adp": null,
+     "adpRound": null,
+     "surplus": null,
+     "undrafted": true
+    },
+    {
+     "name": "Wan'Dale Robinson",
+     "nflTeam": "Ten",
+     "pos": "WR",
+     "round2025": 13,
+     "eligible": true,
+     "round2026": 13,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 126,
+     "adp": 77.9,
+     "adpRound": 7,
+     "surplus": 6,
+     "undrafted": false
+    },
+    {
+     "name": "Dylan Sampson",
+     "nflTeam": "Cle",
+     "pos": "RB",
+     "round2025": 15,
+     "eligible": true,
+     "round2026": 15,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 166,
+     "adp": 162.5,
+     "adpRound": 14,
+     "surplus": 1,
+     "undrafted": false
+    },
+    {
+     "name": "Cam Little",
+     "nflTeam": "Jax",
+     "pos": "K",
+     "round2025": 15,
+     "eligible": true,
+     "round2026": 15,
+     "reason": "1st year keeping him — same round he was drafted",
+     "keeperYear": 0,
+     "finalRank": 184,
+     "adp": 159.3,
+     "adpRound": 14,
+     "surplus": 1,
+     "undrafted": false
+    }
+   ]
+  }
+ ]
 };
 
 // ============================================================
@@ -2561,6 +4127,7 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYJeFYSXc8d32q
 
 let currentTeam = null;
 let draft = { keeper1:null }; // working selection in the open panel
+let isSaving = false; // guards against double-click / double-submit creating duplicate rows
 
 const overlay = document.getElementById('overlay');
 const panelBody = document.getElementById('panelBody');
@@ -2732,8 +4299,8 @@ function renderPanelBody(){
     html += elig.length ? `<div class="pill-grid">${elig.map(p=>pillHtml(p)).join('')}</div>` : `<div class="empty-note">No eligible players on this roster.</div>`;
 
     html += `<div class="action-row">
-      <button class="btn primary" id="saveBtn" type="button">Save pick</button>
-      <button class="btn ghost" id="lockBtn" type="button" ${(!draft.keeper1) ? 'disabled' : ''}>Lock in final pick</button>
+      <button class="btn primary" id="saveBtn" type="button" ${isSaving ? 'disabled' : ''}>${isSaving ? 'Saving…' : 'Save pick'}</button>
+      <button class="btn ghost" id="lockBtn" type="button" ${(!draft.keeper1 || isSaving) ? 'disabled' : ''}>Lock in final pick</button>
       <span class="save-msg" id="saveMsg">Saved &#10003;</span>
     </div>`;
   }
@@ -2801,6 +4368,9 @@ async function savePicks(lockIt){
     alert('This page isn\'t connected to a Google Sheet yet. Paste your Apps Script Web App URL into APPS_SCRIPT_URL near the top of the <script> tag — see the setup instructions.');
     return;
   }
+  if(isSaving) return; // already a save in flight for this team — ignore extra clicks
+  isSaving = true;
+  renderPanelBody();
   const payload = {
     team: currentTeam,
     keeper1: draft.keeper1,
@@ -2822,9 +4392,11 @@ async function savePicks(lockIt){
     }
     draft.locked = payload.locked;
     if(lockIt){
+      isSaving = false;
       renderPanelBody();
       await refreshAll();
       closePanel();
+      return;
     } else {
       const msg = document.getElementById('saveMsg');
       if(msg){ msg.classList.add('show'); setTimeout(()=>msg.classList.remove('show'), 1800); }
@@ -2832,6 +4404,9 @@ async function savePicks(lockIt){
     }
   }catch(e){
     alert('Save failed: ' + (e && e.message ? e.message : 'unknown error'));
+  }finally{
+    isSaving = false;
+    if(overlay.classList.contains('open')) renderPanelBody();
   }
 }
 
@@ -2839,22 +4414,382 @@ let cachedPicks = {};
 async function refreshAll(){
   cachedPicks = await loadAllPicks();
   renderGrid(cachedPicks);
+  if(document.getElementById('tab-impact') &&
+     document.getElementById('tab-impact').classList.contains('active')){
+    renderImpact();
+  }
 }
 
 document.getElementById('closeBtn').addEventListener('click', closePanel);
 overlay.addEventListener('click', (e) => { if(e.target === overlay) closePanel(); });
 document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && overlay.classList.contains('open')) closePanel(); });
 
+
+/* =====================================================================
+   TABS + KEEPER VALUE CALCULATOR + KEEPER IMPACT MAP
+   ---------------------------------------------------------------------
+   Value model:  surplus = keeperCostRound  -  adpRound
+     adpRound = ceil(ADP / 12)  (12-team league)
+     positive surplus = you get him LATER than the market would draft him
+   Players with no 2026 ADP fall outside the top 260 overall, i.e. outside
+   this league's 216-pick draft, so they'd go undrafted -> no edge in
+   spending a pick on them.
+   ===================================================================== */
+
+const LEAGUE_TEAMS = 12;
+const LEAGUE_ROUNDS = 18;
+
+const ALL_PLAYERS = [];
+TEAMS.teams.forEach(t => t.roster.forEach(p => {
+  ALL_PLAYERS.push(Object.assign({}, p, { fantasyTeam: t.name }));
+}));
+
+/* ---------- shared helpers ---------- */
+function verdictFor(p){
+  if(!p.eligible) return {cls:'na',   icon:'—', label:'NOT ELIGIBLE'};
+  if(p.surplus === null || p.surplus === undefined)
+    return {cls:'na', icon:'○', label:'NO ADP'};
+  if(p.surplus >= 6) return {cls:'keep',  icon:'★', label:'ELITE KEEP'};
+  if(p.surplus >= 2) return {cls:'keep',  icon:'▲', label:'GOOD KEEP'};
+  if(p.surplus >= -1) return {cls:'fair', icon:'▬', label:'FAIR'};
+  return {cls:'avoid', icon:'▼', label:'OVERPAY'};
+}
+
+function surplusCell(p){
+  if(!p.eligible) return '<span class="sval z">&mdash;</span>';
+  if(p.surplus === null || p.surplus === undefined)
+    return '<span class="sval z" title="Outside the top 260 ADP">n/a</span>';
+  const MAXV = 13;
+  const pct = Math.min(100, Math.abs(p.surplus) / MAXV * 100) / 2;
+  const cls = p.surplus > 0 ? 'p' : (p.surplus < 0 ? 'n' : 'z');
+  const bar = p.surplus === 0 ? '' :
+    `<div class="fill ${cls}" style="width:${pct}%"></div>`;
+  const sign = p.surplus > 0 ? '+' : '';
+  return `<div style="display:flex;align-items:center;gap:9px;">
+    <div class="sbar"><div class="axis"></div>${bar}</div>
+    <span class="sval ${cls}">${sign}${p.surplus}</span></div>`;
+}
+
+/* ---------- tooltip ---------- */
+const vtip = document.createElement('div');
+vtip.id = 'vtip';
+document.body.appendChild(vtip);
+function showTip(html, e){
+  vtip.innerHTML = html;
+  vtip.style.opacity = '1';
+  const pad = 14;
+  let x = e.clientX + pad, y = e.clientY + pad;
+  const r = vtip.getBoundingClientRect();
+  if(x + r.width > window.innerWidth - 8) x = e.clientX - r.width - pad;
+  if(y + r.height > window.innerHeight - 8) y = e.clientY - r.height - pad;
+  vtip.style.left = x + 'px'; vtip.style.top = y + 'px';
+}
+function hideTip(){ vtip.style.opacity = '0'; }
+
+/* ---------- tab switching ---------- */
+function initTabs(){
+  const btns = document.querySelectorAll('nav.tabs button');
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(x => x.setAttribute('aria-selected','false'));
+    b.setAttribute('aria-selected','true');
+    document.querySelectorAll('.tabpanel').forEach(p => p.classList.remove('active'));
+    document.getElementById(b.dataset.panel).classList.add('active');
+    if(b.dataset.panel === 'tab-value')  renderValueTable();
+    if(b.dataset.panel === 'tab-impact') renderImpact();
+  }));
+}
+
+/* =====================================================================
+   VALUE CALCULATOR
+   ===================================================================== */
+let vSort = { key:'surplus', dir:-1 };
+
+function valueRows(){
+  const team = document.getElementById('fTeam').value;
+  const pos  = document.getElementById('fPos').value;
+  const q    = document.getElementById('fSearch').value.trim().toLowerCase();
+  const onlyElig = document.getElementById('fElig').value;
+
+  let rows = ALL_PLAYERS.slice();
+  if(team !== 'ALL') rows = rows.filter(p => p.fantasyTeam === team);
+  if(pos  !== 'ALL') rows = rows.filter(p => p.pos === pos);
+  if(onlyElig === 'YES') rows = rows.filter(p => p.eligible);
+  if(q) rows = rows.filter(p => p.name.toLowerCase().includes(q));
+
+  const k = vSort.key, d = vSort.dir;
+  const missing = v => (v === null || v === undefined);
+  rows.sort((a,b) => {
+    const av = a[k], bv = b[k];
+    // Rows with no value ALWAYS sink to the bottom, whichever way we sort -
+    // otherwise "no ADP" players lead the table on a descending sort.
+    if(missing(av) && missing(bv)) return a.name.localeCompare(b.name);
+    if(missing(av)) return 1;
+    if(missing(bv)) return -1;
+    if(typeof av === 'string') return av.localeCompare(bv) * d;
+    if(av === bv) return a.name.localeCompare(b.name);
+    return (av - bv) * d;
+  });
+  return rows;
+}
+
+function renderValueTable(){
+  const rows = valueRows();
+  const tb = document.getElementById('vBody');
+
+  if(!rows.length){
+    tb.innerHTML = `<tr><td colspan="8" class="empty-row">No players match these filters.</td></tr>`;
+  } else {
+    tb.innerHTML = rows.map((p,i) => {
+      const v = verdictFor(p);
+      const adpTxt = p.adpRound
+        ? `Rd ${p.adpRound} <span style="color:var(--ink-muted)">(${p.adp})</span>`
+        : `<span style="color:var(--ink-muted)">undrafted</span>`;
+      const cost = p.eligible ? ('Rd ' + p.round2026) : '&mdash;';
+      return `<tr data-i="${i}">
+        <td class="pname">${p.name}</td>
+        <td><span class="posdot">${p.pos}</span> <span style="color:var(--ink-muted)">${p.nflTeam}</span></td>
+        <td>${p.fantasyTeam}</td>
+        <td class="num">${p.round2025 === null ? 'FA' : 'Rd ' + p.round2025}</td>
+        <td class="num">${adpTxt}</td>
+        <td class="num">${cost}</td>
+        <td>${surplusCell(p)}</td>
+        <td><span class="verdict ${v.cls}">${v.icon} ${v.label}</span></td>
+      </tr>`;
+    }).join('');
+
+    Array.from(tb.querySelectorAll('tr')).forEach(tr => {
+      const p = rows[+tr.dataset.i];
+      tr.addEventListener('mousemove', e => showTip(
+        `<div class="tt">${p.name}</div>
+         <div class="tm">${p.pos} &middot; ${p.nflTeam} &middot; ${p.fantasyTeam}</div>
+         <div style="margin-top:6px">${p.reason}</div>` +
+        (p.finalRank ? `<div class="tm" style="margin-top:5px">2025 finish: #${p.finalRank} overall</div>` : '') +
+        (p.adpRound ? `<div class="tm">2026 ADP ${p.adp} &rarr; round ${p.adpRound}</div>`
+                    : `<div class="tm">No 2026 ADP &mdash; outside the top 260</div>`), e));
+      tr.addEventListener('mouseleave', hideTip);
+    });
+  }
+
+  document.querySelectorAll('#vHead th').forEach(th => {
+    const k = th.dataset.k;
+    th.querySelector('.arrow').textContent =
+      (k === vSort.key) ? (vSort.dir === 1 ? '↑' : '↓') : '↕';
+  });
+
+  const elig = ALL_PLAYERS.filter(p => p.eligible && p.surplus !== null);
+  const best = elig.slice().sort((a,b) => b.surplus - a.surplus)[0];
+  const shown = rows;
+  document.getElementById('tileBest').textContent  = best ? best.name : '—';
+  document.getElementById('tileBestS').textContent = best
+    ? `+${best.surplus} rounds of value · ${best.fantasyTeam}` : '';
+  document.getElementById('tilePos').textContent   = elig.filter(p => p.surplus >= 2).length;
+  document.getElementById('tileNeg').textContent   = elig.filter(p => p.surplus <= -2).length;
+  document.getElementById('tileShown').textContent = shown.length;
+}
+
+function initValueTab(){
+  const teamSel = document.getElementById('fTeam');
+  TEAMS.teams.forEach(t => {
+    const o = document.createElement('option');
+    o.value = t.name; o.textContent = t.name; teamSel.appendChild(o);
+  });
+  ['fTeam','fPos','fElig'].forEach(id =>
+    document.getElementById(id).addEventListener('change', renderValueTable));
+  document.getElementById('fSearch').addEventListener('input', renderValueTable);
+
+  document.querySelectorAll('#vHead th').forEach(th => {
+    th.addEventListener('click', () => {
+      const k = th.dataset.k;
+      if(vSort.key === k) vSort.dir *= -1;
+      else vSort = { key:k, dir: (k === 'name' || k === 'fantasyTeam') ? 1 : -1 };
+      renderValueTable();
+    });
+  });
+}
+
+/* =====================================================================
+   IMPACT MAP
+   ===================================================================== */
+function impactPicks(){
+  // returns { teamName: {player, round, projected:boolean} }
+  const mode = document.getElementById('impMode').value;
+  const res = {};
+  TEAMS.teams.forEach(t => {
+    const saved = cachedPicks[t.name];
+    if(saved && saved.keeper1){
+      const pl = t.roster.find(p => p.name === saved.keeper1);
+      res[t.name] = {
+        player: saved.keeper1,
+        round: saved.round1 || (pl ? pl.round2026 : null),
+        pos: pl ? pl.pos : '', adpRound: pl ? pl.adpRound : null,
+        surplus: pl ? pl.surplus : null,
+        projected: false, locked: !!saved.locked
+      };
+    } else if(mode === 'PROJECT'){
+      const cands = t.roster.filter(p => p.eligible && p.surplus !== null);
+      cands.sort((a,b) => b.surplus - a.surplus);
+      const best = cands[0];
+      if(best) res[t.name] = {
+        player: best.name, round: best.round2026, pos: best.pos,
+        adpRound: best.adpRound, surplus: best.surplus,
+        projected: true, locked: false
+      };
+    }
+  });
+  return res;
+}
+
+function seqColor(n){
+  // sequential 4-step blue ramp (validated: monotone L, gaps >=0.06)
+  if(n <= 0) return 'rgba(255,255,255,0.035)';
+  if(n <= 1) return 'var(--seq-1)';
+  if(n <= 2) return 'var(--seq-2)';
+  if(n <= 4) return 'var(--seq-3)';
+  return 'var(--seq-4)';
+}
+
+function renderImpact(){
+  const picks = impactPicks();
+  const names = TEAMS.teams.map(t => t.name);
+
+  // ---- heatmap grid ----
+  let head = '<tr><th class="tm"></th>';
+  for(let r = 1; r <= LEAGUE_ROUNDS; r++) head += `<th class="rd">${r}</th>`;
+  head += '</tr>';
+
+  let body = '';
+  names.forEach(tn => {
+    body += `<tr><th class="tm" title="${tn}">${tn}</th>`;
+    for(let r = 1; r <= LEAGUE_ROUNDS; r++){
+      const pk = picks[tn];
+      const burned = pk && pk.round === r;
+      const cls = burned ? (pk.projected ? 'heatcell proj' : 'heatcell burned') : 'heatcell';
+      const d = burned
+        ? `data-p="${pk.player.replace(/"/g,'&quot;')}" data-r="${r}" data-t="${tn.replace(/"/g,'&quot;')}" data-proj="${pk.projected}"`
+        : `data-empty="1" data-r="${r}" data-t="${tn.replace(/"/g,'&quot;')}"`;
+      body += `<td><div class="${cls}" ${d}></div></td>`;
+    }
+    body += '</tr>';
+  });
+
+  // ---- per-round scarcity footer ----
+  const perRound = [];
+  for(let r = 1; r <= LEAGUE_ROUNDS; r++){
+    perRound.push(names.filter(tn => picks[tn] && picks[tn].round === r).length);
+  }
+  let foot = '<tr><th class="tm" style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.08em;">Picks gone</th>';
+  perRound.forEach((n,i) => {
+    foot += `<td><div class="scarcity" style="background:${seqColor(n)}" data-round="${i+1}" data-n="${n}">`
+          + (n > 0 ? `<span>${n}</span>` : '') + '</div></td>';
+  });
+  foot += '</tr>';
+
+  document.getElementById('heatTable').innerHTML =
+    '<thead>' + head + '</thead><tbody>' + body + foot + '</tbody>';
+
+  // hover layer
+  document.querySelectorAll('#heatTable .heatcell').forEach(c => {
+    c.addEventListener('mousemove', e => {
+      if(c.dataset.empty){
+        showTip(`<div class="tt">${c.dataset.t}</div>
+          <div class="tm">Round ${c.dataset.r} &middot; pick available</div>`, e);
+      } else {
+        const proj = c.dataset.proj === 'true';
+        showTip(`<div class="tt">${c.dataset.p}</div>
+          <div class="tm">${c.dataset.t} &middot; keeps at round ${c.dataset.r}</div>
+          ${proj ? '<div class="tm" style="color:var(--gold-bright);margin-top:4px">Projected — not locked in yet</div>' : ''}`, e);
+      }
+    });
+    c.addEventListener('mouseleave', hideTip);
+  });
+  document.querySelectorAll('#heatTable .scarcity').forEach(c => {
+    c.addEventListener('mousemove', e => {
+      const n = +c.dataset.n;
+      showTip(`<div class="tt">Round ${c.dataset.round}</div>
+        <div class="tm">${n} of ${LEAGUE_TEAMS} picks consumed by keepers</div>
+        <div class="tm">${LEAGUE_TEAMS - n} still on the board</div>`, e);
+    });
+    c.addEventListener('mouseleave', hideTip);
+  });
+
+  // ---- tiles ----
+  const kept = Object.keys(picks).length;
+  const lockedN = Object.values(picks).filter(p => !p.projected).length;
+  const thin = perRound.map((n,i) => ({r:i+1, n})).sort((a,b) => b.n - a.n)[0];
+  document.getElementById('impKept').textContent   = kept + ' / ' + LEAGUE_TEAMS;
+  document.getElementById('impLocked').textContent = lockedN;
+  document.getElementById('impThin').textContent   = thin && thin.n ? ('Round ' + thin.r) : '—';
+  document.getElementById('impThinS').textContent  = thin && thin.n
+    ? (thin.n + ' of 12 picks gone') : 'no keepers in yet';
+
+  renderScarcity(picks);
+}
+
+function renderScarcity(picks){
+  const keptNames = new Set(Object.values(picks).map(p => p.player));
+  const POS = ['QB','RB','WR','TE','K','DEF'];
+  const wrap = document.getElementById('scarceCards');
+
+  wrap.innerHTML = POS.map(pos => {
+    // rank rostered players at this position by ADP (best first)
+    const pool = ALL_PLAYERS
+      .filter(p => p.pos === pos && p.adp !== null && p.adp !== undefined)
+      .sort((a,b) => a.adp - b.adp);
+    if(!pool.length) return '';
+
+    const TOPN = Math.min(12, pool.length);
+    const top = pool.slice(0, TOPN);
+    const goneTop = top.filter(p => keptNames.has(p.name));
+    const goneAll = pool.filter(p => keptNames.has(p.name));
+    const pct = Math.round(goneTop.length / TOPN * 100);
+
+    const listHdr = `<div class="sline" style="margin-bottom:4px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;
+                     text-transform:uppercase;color:var(--ink-muted)">
+          Kept at this position (${goneAll.length})</span></div>`;
+    const list = goneAll.length
+      ? listHdr + goneAll.slice(0,5).map(p => {
+          const rank = pool.findIndex(x => x.name === p.name) + 1;
+          return `<div class="sline"><span class="sname">${p.name}</span>
+                  <span style="color:var(--ink-muted)">${pos}${rank}</span></div>`;
+        }).join('')
+        + (goneAll.length > 5
+            ? `<div class="sline"><span style="color:var(--ink-muted)">+${goneAll.length-5} more</span></div>`
+            : '')
+      : listHdr + '<div class="sline"><span style="color:var(--ink-muted)">None kept</span></div>';
+
+    return `<div class="scard">
+      <h4>${pos}</h4>
+      <div class="sline"><span>Top ${TOPN} removed</span>
+        <strong style="color:var(--chalk)">${goneTop.length}/${TOPN}</strong></div>
+      <div class="meter"><i style="width:${pct}%"></i></div>
+      <div class="sline" style="margin-bottom:10px"><span style="color:var(--ink-muted)">${pct}% of the top tier is off the board</span></div>
+      ${list}
+    </div>`;
+  }).join('');
+}
+
+function initImpactTab(){
+  document.getElementById('impMode').addEventListener('change', renderImpact);
+}
+
+
 (async function init(){
   if(!configured()){
+    initTabs(); initValueTab(); initImpactTab(); renderValueTable(); renderImpact();
     teamGrid.innerHTML = `<div class="warn-box" style="grid-column:1/-1;">
       This page isn't connected to a Google Sheet yet. Open the file, find <code>APPS_SCRIPT_URL</code>
       near the top of the &lt;script&gt; tag, and paste in your Apps Script Web App URL. See the setup instructions doc for the full walkthrough.
     </div>`;
     return;
   }
+  initTabs();
+  initValueTab();
+  initImpactTab();
+  renderValueTable();
   teamGrid.innerHTML = `<div class="loading-row"><span class="spinner"></span> Loading league picks&hellip;</div>`;
   await refreshAll();
+  renderImpact();
 })();
 </script>
 </body>
